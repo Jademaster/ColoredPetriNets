@@ -1,0 +1,42 @@
+Petri nets are a widely studied formalism for representing networks of processes and resources. When a system has sufficient complexity, modeling with ordinary Petri nets quickly becomes unwieldy. Colored Petri nets alleviate this problem by allowing repetitive structures to be encoded as extra data attached to the Petri net. This extra data can be thought of as a more detailed interpretation of the places and transitions in the underlying Petri net. From the ordinary definition of colored Petri net \cite{jensen2013coloured}, it is not clear how a colored Petri net can be obtained by applying a semantic interpretation to an ordinary Petri net. In this paper, we make precise the way in which colored Petri nets are syntax applied to semantics. Indeed, in Proposition \ref{correspond}, we show how a colored Petri net naturally determines a symmetric monoidal double functor
+\[ K \maps FP \to \Span(\FCMon). \]
+Here $P$ is an ordinary Petri net, 
+$FP$ is the categorical semantics of $P$ upgraded trivially to a double category, and $\Span(\FCMon)$ is the double category whose loose morphisms are spans of free commutative monoids. Here $FP$ is regarded as the ``syntax'', and $\Span(\FCMon)$ is the ``semantics''.
+
+Rephrasing colored Petri nets in this way has many advantages. In particular,
+\begin{itemize}
+    \item Transformations between double functors give a natural definition of morphism between colored Petri nets (Definition \ref{morphism}). In this paper, we compare this definition to the definition of morphism of colored Petri nets to the definition given by Lakos \cite{lakosabstraction, lakoscomposing}. We find that our more abstract definition retains many of the desirable qualities of Lakos' definition.
+ \item In 1990 \cite{monoids} Montanari and Meseguer elegantly illustrated the connection between Petri nets and monoidal category theory by giving an operational semantics functor which turns each Petri net into a free symmetric monoidal category. The presentation of colored Petri nets as functors allows for an analogous operational semantics to be defined based on the Grothendieck construction. In Definition \ref{semantics} we construct this operational semantics category and in Proposition \ref{soundness} we prove that it faithfully captures the firing sequences of a colored Petri net.
+%     \[\int \maps \cPetri \to \CMC \]
+%     where $\CMC$ is the category of commutative monoidal categories.
+\item Unfolding is an algorithmic process which turns a colored Petri net into an ordinary one for the purposes of analysis \cite{jensen2013coloured}. In this paper we describe unfolding as a functor 
+    \[ \mathtt{UNFOLD} \maps \cPetri \to \Petri.\]
+    The correctness of unfolding can be expressed concisely using category theory. In Theorem \ref{unfold}, we show that there is a diagram
+\[
+\begin{tikzcd} 
+& \Petri \ar[dr,"F"] & \\
+\cPetri \ar[ur,"\UNFOLD"] \ar[rr,"\int",swap]  & &\CMC.
+\end{tikzcd}
+\]
+which commutes up to isomorphism. This commutativity expresses the fact that unfolding preserves processes by providing an isomorphism between the sequences of processes of a colored Petri net and the sequences of processes of its unfolding.
+\end{itemize}
+
+A plan of this paper is as follows: 
+\begin{itemize}
+    \item In Section \ref{sec:petri} we give a review of Petri nets and their process semantics from the perspective of category theory.
+    \item In Section \ref{sec:coloredpetri} we introduce a definition of colored Petri nets and their morphisms and discuss their relationship to the traditional notions of colored Petri nets and their morphisms.
+   \item In Section \ref{sec:unfolding} we describe unfolding of colored Petri nets as a functor. We use this to give a categorical process semantics for colored Petri nets.
+   \item In Appendix \ref{display}, we prove a key technical result: the equivalence between displayed categories and functors. This is a result which is well-known as folklore but lacked a formal proof in the literature until now.
+\end{itemize}
+\subsection{Related Work}
+A characterization of colored Petri nets as functors has already appeared in \cite{Guarded}.  Although \cite{Guarded} and the current paper use similar ideas, they were developed independently. Furthermore, the colored Petri nets studied in this paper have some differences from the colored Petri nets studied by Genovese and Spivak:
+\begin{itemize}
+\item The domain is not the same: The free symmetric monoidal category used by Genovese and Spivak is the non-commutative variant developed by Sassone \cite{SassoneStrong}. We use the free commutative monoidal category functor originated in \cite{monoids} and clarified in \cite{GeneralizedPetriNets}. Our approach gives an operational semantics which highlights the \emph{collective token philosophy}; the order and identities of the tokens are not represented in this operational semantics. On the other hand, the construction of Sassone follows the \emph{individual token philosophy} which does keep track of this data. We chose the free commutative monoidal category because it's existence follows from more general categorical principles. To freely generate symmetric monoidal categories which exhibit the individual token philosophy, we suggest using pre-nets, a non-commutative variant of Petri nets which have a more straightforward adjunction into the right sort of symmetric monoidal category \cite{functorialsemantics}.
+\item The arc inscriptions are not the same: In Genovese and Spivak's approach, each transition is mapped to an isomorphism class of spans of sets. On the other hand, in our approach each transition is annotated with a span in the Kleisli category $\Kl(\mathbb{N})$. Using the Kleisli category allows the colors of the transitions to have multisets of inputs and outputs whereas the colors on the transitions in \cite{Guarded} may only map unique inputs to unique outputs. As proven in Proposition \ref{correspond}, our definition matches the original definition in \cite{jensen}.
+\item The definition in \cite{Guarded} is evil: 
+Evil is not meant as a moral judgement, just that the model does not satisfy the principle of equivalence (i.e.\ \cite{evil}).
+The codomain of a colored Petri net in Genovese and Spivak's approach is a decategorification of the double category $\Span(\Set)$ whose morphisms are equivalence classes of spans. Defining a functor into this category requires choosing a non-canonical representatives from these equivalence classes. If these representatives are chosen inconsistently, two colored Petri nets which are equal may have totally different presentations. To make matters worse, in \cite{Guarded} the authors have also decategorified the cartesian monoidal structure of $\Span(\Set)$ to make it strictly associative and unital. With so many equivalence relations imposed on spans of sets, it is unclear how to choose representatives in consistent way. In this paper we have remedied this issue by using lax functors and double categories so that each transition is annotated by an actual span rather than an equivalence class.
+
+\end{itemize}
+In \cite{Genovese_2022}, the authors define a categorical semantics for \emph{bounded} Petri nets using the displayed category construction. They do not record a proof of the equivalence in Appendix \ref{display}.
+

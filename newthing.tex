@@ -1,0 +1,96 @@
+\section{New Thing}
+
+So we have a new understanding of the role that the arcs play in this story, and it informs our way of thinking about the relationship between our colored Petri nets, and those of Genovese-Spivak. 
+
+Notice that the free commutative monoid $\N(S)$ on a set $S$ can be constructed as $\N(S) = \coprod_{n \in \N} S^n/\Sigma_n$, where $S^n$ is acted on by the symmetric group $\Sigma_n$ in the obvious way.
+
+\begin{defn}
+    A \define{single-arced net} is a Petri net of the following form.
+    \[\begin{tikzcd} 
+        P \maps T 
+        \arrow[r, shift left, "s"] 
+        \arrow[r, shift right, "t", swap] 
+        &
+        2^S
+        \arrow[r, hookrightarrow]
+        &
+        \N[S]
+    \end{tikzcd}\]
+    A \define{condensed net} is a safe net $P$ equipped with a \joe{double??} functor of the following form.
+    \[K \maps FP \to \Span(\Kl(\N))\]
+\end{defn}
+
+From a given condensed net $P$, we give a construction for a colored Petri net in the sense of Genovese-Spivak \cite{Guarded}, which will be of the following form.
+
+\[\Khat \maps FQ \to \Span(\Set)\]
+
+First, we must define an absolute value operation. For each $p \in S$, we define the map
+\[|-| \maps \N[K(p)] \to \N\]
+to return the sum of the vector's entries. For a subset $U \subseteq S$, we get
+\[
+    |-| \maps \N[K(U)] \cong \bigoplus_{p \in U} \left( \N[K(p)] \right) \to \bigoplus_{p \in U} \N \hookrightarrow \bigoplus_{p \in S} \N = \N[S]
+\]
+by taking the coproduct of the corresponding maps above and then taking the natural inclusion.
+
+First, we give the underlying ordinary Petri net 
+\begin{tikzcd} 
+    Q \maps \coprod_{\tau \in T} K(\tau) 
+    \arrow[r, shift left, "s'"] 
+    \arrow[r, shift right, "t'", swap]
+    &
+    \N[S],
+\end{tikzcd} 
+which has
+\begin{align*}
+    s' &\maps \coprod_{\tau \in T} K(\tau) \to \N[S]
+    \\
+    t' &\maps \coprod_{\tau \in T} K(\tau) \to \N[S]
+\end{align*}
+defined by 
+\begin{align*}
+    s'(c) &= |K\tau_i(c)|
+    \\
+    t'(c) &= |K\tau_o(c)|
+\end{align*}
+where $c \in K(\tau)$.
+
+Now we want to define the new color functor $\Khat \maps FQ \to \Span$. To each marking $\sum^n p_i$ of $Q$, we assign the set $\prod^n K(p_i)$. Recall that for a transition $\tau$ in $P$ with $s(\tau) = \sum^n p_i$ and $t(\tau) = \sum^m q_i$, $K$ gives a span in $Kl(\N)$:
+\[
+\begin{tikzcd}
+    &
+    K(\tau)
+    \arrow[dl, swap, "K\tau_i"]
+    \arrow[dr, "K\tau_o"]
+    \\
+    \N[K(s(\tau))]
+    \arrow[d, swap, "\cong"]
+    &&
+    \N[K(t(\tau))]
+    \arrow[d, "\cong"]
+    \\
+    \prod \N[K(p_i)]
+    &&
+    \prod \N[K(q_i)]
+\end{tikzcd}
+\]
+Then for a transition $c \in K(\tau)$ of $Q$, we define $\Khat(c)$ to be the span:
+\[
+\begin{tikzcd}
+    &
+    1
+    \arrow[dl, swap, "\Khat c_i"]
+    \arrow[dr, "\Khat c_0"]
+    \\
+    \prod K(-)
+    &&
+    \prod K(-)
+\end{tikzcd}
+\]
+with 
+\begin{align*}
+    \Khat c_i &= 
+    \\
+    \Khat c_o &= 
+\end{align*}
+
+\joe{I stopped here because there is a slight confusion about exactly what these values should be. The problem stems from ordered versus unordered lists of colors as the output.}

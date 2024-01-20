@@ -1,0 +1,245 @@
+\section{Double categories}
+
+\subsection*{Double Categories}
+
+What follows are brief definitions of vertical transformations, monoidal double categories, and lax monoidal double functors. A more detailed exposition can be found in the work of Grandis and Par\'e \cite{GP1,GP2} \joe{missing citation}, and for monoidal double categories the work of Shulman \cite{Shulman2} \joe{missing citations}. We use `double category' to mean what earlier authors called a `pseudo double category'.
+
+% \begin{defn}
+% \label{defn:double_category}
+%     A \textbf{double category} is a category weakly internal to $\Cat$. More explicitly, a double category $\mathbb{D}$ consists of:
+%     \begin{itemize}
+%         \item a \define{category of objects} $\mathbb{D}_0$ and a \define{category of arrows} $\mathbb{D}_1$,
+%         \item  \define{source} and \define{target} functors
+%         \[  
+%             S,T \colon \mathbb{D}_1 \to \mathbb{D}_0 ,
+%         \]
+%         an \define{identity-assigning} functor
+%         \[  
+%             U\colon \mathbb{D}_0 \to \mathbb{D}_1 ,
+%         \]
+%         and a \define{composition} functor
+%         \[ 
+%             \odot \colon \mathbb{D}_1 \times_{\mathbb{D}_0} \mathbb{D}_1 \to \mathbb{D}_1 
+%         \]
+%         where the pullback is taken over $\mathbb{D}_1 \xrightarrow[]{T} \mathbb{D}_0 \xleftarrow[]{S} \mathbb{D}_1$,
+%         such that
+%         \[  
+%             S(U_{A})=A=T(U_{A}) , \quad
+%         	S(M \odot N)=SN, \quad
+%             T(M \odot N)=TM, 
+%         \]
+%         \item natural isomorphisms called the \define{associator}
+%         \[ 
+%             \alpha_{N,N',N''} \maps (N \odot N') \odot N'' \xrightarrow{\sim} N \odot (N' \odot N'') , 
+%         \]
+%         the \define{left unitor}
+%         \[		
+%             \lambda_N \maps U_{T(N)} \odot N \xrightarrow{\sim} N, 
+%         \]
+%         and the \define{right unitor}
+%         \[  
+%             \rho_N \maps N \odot U_{S(N)} \xrightarrow{\sim} N 
+%         \]
+%         such that $S(\alpha), S(\lambda), S(\rho), T(\alpha), T(\lambda)$ and $T(\rho)$ are all identities and such that the standard coherence axioms hold: the pentagon identity for the associator and the triangle identity for the left and right unitor \cite[Sec.\ VII.1]{ML}.
+%     \end{itemize}
+%     If $\alpha$, $\lambda$ and $\rho$ are identities, we call $\mathbb{D}$ a \define{strict} double category.
+% \end{defn}
+
+% Objects of $\mathbb{D}_0$ are called \define{objects} and morphisms in $\mathbb{D}_0$ are called \define{vertical 1-morphisms}.  Objects of $\mathbb{D}_1$ are called \define{horizontal 1-cells} of $\mathbb{D}$ and morphisms in $\mathbb{D}_1$ are called \define{2-morphisms}.   A morphism $\alpha \maps M \to N$ in $\mathbb{D}_1$ can be drawn as a square:
+% \[
+% \begin{tikzpicture}[scale=1]
+% \node (D) at (-4,0.5) {$A$};
+% \node (E) at (-2,0.5) {$B$};
+% \node (F) at (-4,-1) {$C$};
+% \node (A) at (-2,-1) {$D$};
+% \node (B) at (-3,-0.25) {$\Downarrow \alpha$};
+% \path[->,font=\scriptsize,>=angle 90]
+% (D) edge node [above]{$M$}(E)
+% (E) edge node [right]{$g$}(A)
+% (D) edge node [left]{$f$}(F)
+% (F) edge node [above]{$N$} (A);
+% \end{tikzpicture}
+% \]
+% where $f = S\alpha$ and $g = T\alpha$. Note that every category $C$ can be upgraded to a double category. The sets $\Ob \,C$ and $\Mor \, C$ can be regarded as categories with only identity morphisms and the structure maps (source, target, identities, and composition) extend to functors between these categories in a unique way. In this way $C$ gives a trivial double category where the only vertical morphisms and $2$-morphisms are given by identitites. 
+
+% There are maps between double categories, and also transformations between maps:
+% \begin{defn}
+% \label{defn:double_functor}
+% Let $\mathbb{A}$ and $\mathbb{B}$ be double categories. A \textbf{double functor} $F \maps \mathbb{A} \to \mathbb{B}$ consists of:
+% \begin{itemize}
+% \item functors $F_0 \maps \mathbb{A}_0 \to \mathbb{B}_0$ and $F_1 \maps \mathbb{A}_1 \to \mathbb{B}_1$ obeying the following
+% equations: 
+% \[S \circ F_1 = F_0 \circ S, \qquad T \circ F_1 = F_0 \circ T,\]
+% \item natural isomorphisms called the \define{composition comparison}: 
+% \[   \phi(N,N') \maps F_1(N) \odot F_1(N') \stackrel{\sim}{\longrightarrow} F_1(N \odot N') \]
+% and the \define{identity comparison}:
+% \[  \phi_{A} \maps U_{F_0 (A)} \stackrel{\sim}{\longrightarrow} F_1(U_A) \]
+% whose components are globular 2-morphisms, 
+% \end{itemize}
+% such that the following diagram commmute:
+% \begin{itemize} 
+% \item a diagram expressing compatibility with the associator: 
+% \[\xymatrix{ 	(F_1(N) \odot F_1(N')) \odot F_1(N'') \ar[d]_{\phi (N,N') \odot 1} \ar[r]^{\alpha} & F_1(N) \odot (F_1(N') \odot F_1(N'')) \ar[d]^{1 \odot \phi(N',N'')} \\
+% 			F_1(N \odot N') \odot F_1(N'') \ar[d]_{\phi(N \odot N', N'')} & F_1(N) \odot F_1(N' \odot N'') \ar[d]^{\phi(N, N'\odot N'')}\\
+% F_1((N \odot N') \odot N'') \ar[r]^{F_1(\alpha)} & F_1(N \odot (N' \odot N'')) }	\]
+% \item two diagrams expressing compatibility with the left and right unitors:
+% 	\[
+% 	\begin{tikzpicture}[scale=1.5]
+% 	\node (A) at (1,1) {$F_1(N) \odot U_{F_0(A)}$};
+% 	\node (A') at (1,0) {$F_1(N) \odot F_1(U_{A})$};
+% 	\node (C) at (3.5,1) {$F_1(N)$};
+% 	\node (C') at (3.5,0) {$F_1(N \odot U_A)$};
+% 	\path[->,font=\scriptsize,>=angle 90]
+% 	(A) edge node[left]{$1 \odot \phi_{A}$} (A')
+% 	(C') edge node[right]{$F_1(\rho_N)$} (C)
+% 	(A) edge node[above]{$\rho_{F_1(N)}$} (C)
+% 	(A') edge node[above]{$\phi(N,U_{A})$} (C');
+% 	\end{tikzpicture}
+% 	\]
+% 	\[
+% 	\begin{tikzpicture}[scale=1.5]
+% 	\node (B) at (5.5,1) {$U_{F_0(B)} \odot F_1(N)$};
+% 	\node (B') at (5.5,0) {$F_1(U_{B}) \odot F_1(N)$};
+% 	\node (D) at (8,1) {$F_1(N)$};
+% 	\node (D') at (8,0) {$F_1(U_{B} \odot N).$};
+% 		\path[->,font=\scriptsize,>=angle 90]
+% 		(B) edge node[left]{$\phi_{B} \odot 1$} (B')
+% 	(B') edge node[above]{$\phi(U_{B},N)$} (D')
+% 	(B) edge node[above]{$\lambda_{F_1(N)}$} (D)
+% 	(D') edge node[right]{$F_1(\lambda_{N})$} (D);
+% 	\end{tikzpicture}
+% 	\]
+% \end{itemize}
+% If the 2-morphisms $\phi(N,N')$ and $\phi_A$ are identities for all $N,N' \in \mathbb{A}_1$ and 
+% $A \in \mathbb{A}_0$, we say $F \maps \mathbb{A} \to \mathbb{B}$ is a \define{strict} double functor.  If on the other hand we drop the requirement that these 2-morphisms be invertible, we call $F$ a \define{lax} double
+% functor.
+% \end{defn}
+	
+\begin{defn}
+Let $F \maps \mathbb{A} \to \mathbb{B}$ and $G \maps \mathbb{A} \to \mathbb{B}$ be lax double functors. A \define{vertical transformation} $\beta \maps F \Rightarrow G$ consists of natural transformations $\beta_0 \maps F_0 \Rightarrow G_0$ and $\beta_1 \maps F_1 \Rightarrow G_1$ (both usually written as $\beta$) such that 
+		\begin{itemize}
+			\item $S( \beta_M) = \beta_{SM}$ and $T(\beta_M) = \beta_{TM}$ for any object $M \in A_1$, (\joe{I don't know what kind of font you wanted but slash A isn't defined.})
+			\item $\beta$ commutes with the composition comparison, and
+			\item $\beta$ commutes with the identity comparison.
+		\end{itemize}
+\end{defn}
+	
+Shulman defines a 2-category $\mathbf{Dbl}$ of double categories, double functors, and vertical transformations \cite{Shulman2} \joe{Which Shulman paper?}. This has finite products.  In any 2-category with finite products we can define a pseudomonoid \cite{Monoidalbicatshopfalgebroids}, which is a categorification of the concept of monoid.  For example, a pseudomonoid in $\mathsf{Cat}$ is a monoidal category.
+	
+\begin{defn}
+\label{defn:monoidal_double_category}
+    A \textbf{monoidal double category} is a pseudomonoid in $\mathbf{Dbl}$. Explicitly, a monoidal double category is a double category equipped with double functors $\otimes \maps \mathbb{D} \times \mathbb{D} \to \mathbb{D}$ and $I \maps * \to \mathbb{D}$ where $*$ is the terminal double category, along with invertible vertical transformations called the \define{associator}:
+    \[  
+        A \maps \otimes \, \circ \; (1_{\mathbb{D}} \times \otimes ) \Rightarrow \otimes \; \circ \; (\otimes \times 1_{\mathbb{D}}) ,
+    \]
+\define{left unitor}:
+\[ L\maps \otimes \, \circ \; (1_{\mathbb{D}} \times I) \Rightarrow 1_{\mathbb{D}} ,\]
+and \define{right unitor}:
+\[ R \maps \otimes \,\circ\; (I \times 1_{\mathbb{D}}) \Rightarrow 1_{\mathbb{D}} \]
+satisfying the pentagon axiom and triangle axioms.
+\end{defn}
+
+This definition neatly packages a large quantity of information.   Namely:
+\begin{itemize}
+\item $\mathbb{D}_0$ and $\mathbb{D}_1$ are both monoidal categories.
+\item If $I$ is the monoidal unit of $\mathbb{D}_0$, then $U_I$ is the
+monoidal unit of $\mathbb{D}_1$.
+\item The functors $S$ and $T$ are strict monoidal.
+\item $\otimes$ is equipped with composition and identity comparisons
+\[ \chi \maps (M_1\otimes N_1)\odot (M_2\otimes N_2) \stackrel{\sim}{\longrightarrow}
+(M_1\odot M_2)\otimes (N_1\odot N_2)\]
+\[ \mu \maps U_{A\otimes B} \stackrel{\sim}{\longrightarrow} (U_A \otimes U_B)\]
+making three diagrams commute as in Def.\ \ref{defn:double_functor}.
+%		\[\xymatrix{
+%			((M_1\ten N_1)\odot (M_2\ten N_2)) \odot (M_3\ten N_3) \ar[r]^{\fx \odot 1} \ar[d]_{\alpha}
+%			& ((M_1\odot M_2)\ten (N_1\odot N_2)) \odot (M_3\ten N_3) \ar[d]^{\fx}\\
+%			(M_1\ten N_1)\odot ((M_2\ten N_2) \odot (M_3\ten N_3)) \ar[d]_{1 \odot \fx} &
+%			((M_1\odot M_2)\odot M_3) \ten ((N_1\odot N_2)\odot N_3) \ar[d]^{\alpha \otimes \alpha}\\
+%			(M_1\ten N_1) \odot ((M_2\odot M_3) \ten (N_2\odot N_3))\ar[r]^{\fx} &
+%			(M_1\odot (M_2\odot M_3)) \ten (N_1\odot (N_2\odot N_3))}\]
+%		\[\xymatrix{(M\ten N) \odot U_{C\ten D} \ar[r]^{1 \odot \fu} \ar[d]_{\rho} &
+%			(M\ten N)\odot (U_C\ten U_D) \ar[d]^{\fx}\\
+%			M\ten N\ar@{<-}[r]^{\rho \otimes \rho} & (M\odot U_C) \ten (N\odot U_D)}\]
+%		\[\xymatrix{U_{A\ten B}\odot (M\ten N)  \ar[r]^{\fu \odot 1} \ar[d]_{\lambda} &
+%			(U_A\ten U_B)\odot (M\ten N) \ar[d]^{\fx}\\
+%			M\ten N\ar@{<-}[r]^{\lambda \otimes \lambda} & (U_A \odot M) \ten (U_B\odot N)}\]
+
+\item The associativity isomorphism for $slash ten$ (\joe{slash ten is undefined}) is a vertical transformation between double functors.
+%		\[\xymatrix{
+%			((M_1\ten N_1)\ten P_1) \odot ((M_2\ten N_2)\ten P_2) \ar[r]^{a \odot a}\ar[d]_{\fx} &
+%			(M_1\ten (N_1\ten P_1)) \odot (M_2\ten (N_2\ten P_2)) \ar[d]^{\fx}\\
+%			((M_1\ten N_1) \odot (M_2\ten N_2)) \ten (P_1\odot P_2) \ar[d]_{\fx \otimes 1} &
+%			(M_1\odot M_2) \ten ((N_1\ten P_1)\odot (N_2\ten P_2))\ar[d]^{1 \otimes \fx} \\
+%			((M_1\odot M_2) \ten(N_1\odot N_2)) \ten (P_1\odot P_2) \ar[r]^{a} &
+%			(M_1\odot M_2) \ten ((N_1\odot N_2)\ten (P_1\odot P_2))}\]
+%		\[\xymatrix{
+%			U_{(A\ten B)\ten C} \ar[r]^{U_{a}} \ar[d]_{\fu} & U_{A\ten (B\ten C)} \ar[d]^{\fu}\\
+%			U_{A\ten B} \ten U_C \ar[d]_{\fu \otimes 1} & U_A\ten U_{B\ten C}\ar[d]^{1 \otimes \fu}\\
+%			(U_A\ten U_B)\ten U_C \ar[r]^{a} & U_A\ten (U_B\ten U_C) }\]
+		\item The unit isomorphisms are vertical transformations
+between double functors.
+%		\[\vcenter{\xymatrix{
+%				(M\ten U_I)\odot (N\ten U_I)\ar[r]^{\fx}\ar[d]_{r \odot r} &
+%				(M\odot N)\ten (U_I \odot U_I) \ar[d]^{1 \otimes \rho}\\
+%				M\odot N \ar@{<-}[r]^{r} &
+%				(M\odot N)\ten U_I }}\]
+%		\[\vcenter{\xymatrix{U_{A\ten I} \ar[r]^{\fu} \ar[dr]_{U_{r}} & U_A\ten U_I \ar[d]^{r}\\
+%				& U_A}}\]
+%		\[\vcenter{\xymatrix{
+%				(U_I\ten M)\odot (U_I\ten N)\ar[r]^{\fx} \ar[d]_{\ell \odot \ell} &
+%				(U_I \odot U_I) \ten (M\odot N) \ar[d]^{\lambda \otimes 1}\\
+%				M\odot N \ar@{<-}[r]^{\ell} &
+%				U_I\ten (M\odot N) }}\]
+%		\[\vcenter{\xymatrix{U_{I\ten A} \ar[r]^{\fu}\ar[dr]_{U_{\ell}} & U_I\ten U_A \ar[d]^{\ell}\\
+%				& U_A}}\]
+%		\newcounter{mondbl}
+%		\setcounter{mondbl}{\value{enumi}}
+	\end{itemize}
+
+
+	\begin{defn}
+	\label{defn:symmetric_monoidal_double_category}
+A \define{braided monoidal double category} is a monoidal double
+category equipped with an invertible vertical transformation
+\[ \beta \maps \otimes \Rightarrow \otimes \circ \tau \]
+called the \define{braiding}, where $\tau \maps \mathbb{D} \times \mathbb{D} \to \mathbb{D} \times \mathbb{D}$ is the twist double functor sending pairs in the object and arrow categories to the same pairs in the opposite order. The braiding is required to satisfy the usual two hexagon identities \cite[Sec.\ XI.1]{ML}.  If the braiding is self-inverse we say that $\mathbb{D}$ is a \define{symmetric monoidal double category}.
+	\end{defn}
+	
+In other words:
+\begin{itemize}
+		\item $\mathbb{D}_0$ and $\mathbb{D}_1$ are braided (resp. symmetric) monoidal categories,
+		\item the functors $S$ and $T$ are strict braided monoidal functors, and
+		\item the braiding is a vertical transformation between double functors.
+\end{itemize}
+
+\begin{defn}
+\label{defn:monoidal_double_functor}
+    A \define{monoidal lax double functor} $F \colon \mathbb{C} \to \mathbb{D}$ between monoidal double categories $\mathbb{C}$ and $\mathbb{D}$ is a lax double functor $F \maps \mathbb{C} \to \mathbb{D}$ such that
+	\begin{itemize}
+		\item $F_0$ and $F_1$ are monoidal functors,
+		\item $SF_1= F_0S$ and $TF_1 = F_0T$ are equations between monoidal functors, and
+		\item the composition and unit comparisons $\phi(N_1,N_2) \maps F_1(N_1) \odot F_1(N_2) \to F_1(N_1\odot N_2)$ and $\phi_A \maps U_{F_0 (A)} \to F_1(U_A)$ are monoidal natural vertical transformations.
+	\end{itemize}
+    The monoidal lax double functor is \define{braided} if $F_0$ and $F_1$ are braided monoidal functors and \define{symmetric} if they are symmetric monoidal functors. 
+    
+    A fundamental example is the symmetric monoidal double category of spans.
+    \begin{defn}\label{span}
+    Let $\Span$ denote the double category where
+\begin{itemize}
+\item the category of objects is given by $\Set$: the category of sets and functions,
+\item the category of morphisms $\Span_1$ has objects given by spans of functions
+   \[\begin{tikzcd}A &\ar[l]X \ar[r] & B \end{tikzcd}\]
+and a morphism from $\begin{tikzcd}A &\ar[l]X \ar[r] & B \end{tikzcd}$ to $\begin{tikzcd}A' &\ar[l]Y \ar[r] & B' \end{tikzcd}$ is a commuting diagram
+    \[
+    \begin{tikzcd}
+        A\ar[d] & X \ar[r] \ar[d] \ar[l] & B \ar[d] \\
+        A' & Y \ar[r] \ar[l] & B'.
+    \end{tikzcd}
+    \]
+    \item The source and target functors $S,T \maps \Span_1 \to \Set $ send a span $\begin{tikzcd}A &\ar[l]X \ar[r] & B \end{tikzcd}$ to $A$ and $B$ respectively.
+    \item The identity assigning functor $U\maps \Set \to \Span_1$ sends a set $X$ to the span $\begin{tikzcd}X &\ar[l,"1_x",swap]X \ar[r,"1_x"] & X \end{tikzcd}$.
+    \item The composition functor, $\circ \maps \Span_1 \times_{\Set} \Span_1 \to \Span_1$, sends a pair of spans to their pullback and a pair of 2-morphisms to the universal map induced by the pullback.
+    \item The associator, the left unitor and, the right unitor are all given by canonical isomorphisms.
+\end{itemize} 
+\end{defn}
+\end{defn}

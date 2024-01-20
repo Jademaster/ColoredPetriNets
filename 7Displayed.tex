@@ -1,0 +1,616 @@
+\section{Displayed Categories}\label{display}
+
+% A displayed category is a way of presenting the data of a category which is in some sense torn apart. \jade{I don't know if this sentence is necessary. May I delete?} 
+Technically, a displayed category is a lax functor into the category of spans. There is a procedure for constructing the category which is being displayed, called the total category. This is a generalization of the Grothendieck construction \cite{SGAI}. Like the Grothendieck construction, this gives an equivalence between the category of displayed categories and the arrow category of $\Cat$. The term ``displayed category'' was introduced in \cite{displayed}, but they have been studied before \cite{Abramsky, benabounotes}. In \cite{Abramsky}, they say that this equivalence is somewhat obvious, but a proof could not be found anywhere. 
+
+In this appendix, we give the definition of displayed categories and the construction of the total category. In \cref{thm:intfunctor}, we prove that the construction of the total category (and its projection to the base) is functorial. In \cref{thm:Dfunctor}, we prove that there is a functorial way of constructing a displayed category from any functor. Finally, we prove the equivalence $\Disp \cong \Cat^\to$ in \cref{thm:dispequivcatarrow}. Thus, retrieving this result from the realm of folklore.
+
+% \subsection*{Defining the categories}
+% % Composition of spans given by pullback. We call a span of the form 
+% % \[
+% % \begin{tikzcd}
+% %     &A
+% %     \arrow[dl, "1_A", swap]
+% %     \arrow[dr, "f"]
+% %     \\
+% %     A
+% %     &&
+% %     B
+% % \end{tikzcd}\]
+% % a \define{function}.
+
+% Let $\Disp$ denote the category where
+% \begin{itemize}
+%     \item objects are lax double functors $F \maps X \to \Span$ where $X$ is an ordinary category upgraded to a double category with only identity tight morphisms and $2$-morphisms.
+%     \item A morphism $(\phi, \alpha) \maps F \to G$ is functor $\phi \maps X \to Y$ and a double transformation $\alpha$ filling the diagram
+%     \[
+%     \begin{tikzcd}
+%         X
+%         \arrow[dr, "F"]
+%         \arrow[dd, swap, "\phi"]
+%         \arrow[dd, phantom, "\Downarrow \alpha", bend left = 40]
+%         \\&
+%         \Span
+%         \\
+%         Y
+%         \arrow[ur, swap, "G"].
+%     \end{tikzcd}\]
+% \end{itemize}
+% The objects of $\Disp$ are called \define{displayed categories}.
+
+% The arrow category of $\Cat$, denoted $\Cat^\to$, where the
+% \begin{itemize}
+%     \item objects are functors $F \maps C \to X$
+%     \item morphisms are commutative squares of functors.
+%     \[\begin{tikzcd}
+%         C
+%         \arrow[r, "\phi_1"]
+%         \arrow[d, swap, "F"]
+%         &
+%         D
+%         \arrow[d, "G"]
+%         \\
+%         X
+%         \arrow[r, swap, "\phi_2"]
+%         &
+%         Y
+%     \end{tikzcd}\]
+% \end{itemize}
+% For convenience, we sometimes write objects in the form $[F \maps X \to Y]$, and morphisms in the form $\phi \maps [F \maps X \to Y] \to [F \maps X \to Y]$.
+
+\subsection*{Constructing the category which is displayed}
+
+Given a displayed category $F \maps X \to \Span$, we construct the \define{total category}, $\Int F$, where
+\begin{itemize}
+    \item objects are pairs $(x \in X, c \in Fx)$,
+   \item morphisms are of the form $(f,g) \maps (x,c) \to (y,d)$
+\end{itemize}
+where $f$ is a morphism in $X$, and $g \in Ff$ such that $Ff_x(g) = c$ and $Ff_y(g) = d$. We draw such a morphism as 
+\[
+\begin{tikzcd}
+    &
+    (Ff,g)
+    \arrow[dl, swap, "Ff_x"]
+    \arrow[dr, "Ff_y"]
+    \\
+    (Fx,c)
+    &&
+    (Fy,d)
+\end{tikzcd}\]
+and we say that $g$ \define{witnesses} that $F$ relates $c$ to $d$. Composition is given by 
+\[
+\begin{tikzcd}
+    &&
+    (F(f \circ h), \psi(g,i))
+    \arrow[dddll, bend right]
+    \arrow[dddrr, bend left]
+    \\&&
+    (Ff \times_{Fy} Fh, (g,i))
+    \arrow[dl]
+    \arrow[dr]
+    \arrow[u, "\psi"]
+    \\
+    &
+    (Ff, g)
+    \arrow[dl, "Ff_x"]
+    \arrow[dr, "Ff_y", pos = 0.3]
+    &&
+    (Fh, i)
+    \arrow[dl, swap, "Fh_y", pos = 0.3]
+    \arrow[dr, swap, "Fh_z"]
+    \\
+    (Fx, c)
+    &
+    &
+    (Fy, d)
+    &
+    &
+    (Fz, e)
+\end{tikzcd}\]
+\joe{where we get the right commutativity of this diagram from the coherence conditions of $\psi$}.
+
+There is a canonical projection functor $P_X \maps \Int F \to \X$ which is given by forgetting the second entry in both objects and morphisms.
+
+\subsection*{Constructing the functor which is displayed}
+
+Let $f \maps x \to y$ in $X$. The double transformation $\alpha$ in
+\[
+\begin{tikzcd}
+    X
+    \arrow[dr, "F"]
+    \arrow[dd, swap, "\phi"]
+    \arrow[dd, phantom, "\Downarrow \alpha", bend left = 40]
+    \\&
+    \Span
+    \\
+    Y
+    \arrow[ur, swap, "G"]
+\end{tikzcd}\]
+has components which look like
+\[
+\begin{tikzcd}
+    Fx
+    \arrow[d, "\alpha_x", swap]
+    &
+    Ff
+    \arrow[d, "\alpha_f"]
+    \arrow[r, "Ff_y"]
+    \arrow[l, "Ff_x", swap]
+    &
+    Fy
+    \arrow[d, "\alpha_y"]
+    \\
+    G \phi x
+    &
+    G \phi f
+    \arrow[r, "G\phi f_y", swap]
+    \arrow[l, "G\phi f_x"]
+    &
+    G \phi y
+\end{tikzcd}
+\]
+where $\alpha_x$ and $\alpha_y$ are the object components of $\alpha$, and $\alpha_f$ is the morphism component of $\alpha$. Commutativity of the squares gives us the following equations.
+\begin{align*}
+    G\phi f_y &= \alpha_y \circ Ff_y \circ \alpha_f 
+    \\
+    G\phi f_x &= \alpha_x \circ Ff_x \circ \alpha_f 
+\end{align*}
+
+Given a morphism $(\phi, \alpha) \maps (X, F) \to (Y, G)$ in $\Disp$, we must construct a morphism $[P_X \maps \Int F \to X] \to [P_Y \maps \Int G \to Y]$ in $\Cat^\to$. Such a morphism must be a commutative square of functors of the following form. 
+\[
+\begin{tikzcd}
+    \Int F
+    \arrow[d, "P_X", swap]
+    \arrow[r, dashed]
+    &
+    \Int G
+    \arrow[d, "P_Y"]
+    \\
+    X 
+    \arrow[r, swap, "\phi"]
+    &
+    Y
+\end{tikzcd}
+\] 
+Define the functor \[\alphahat \maps \Int F \to \Int G\] 
+by 
+\[
+    \alphahat(x \in X, c \in F x) = (\phi x \in Y, \alpha_x c \in G \phi x)
+\]
+on objects, and $\alphahat(f, g) = (\phi f, \alpha_f g)$ on morphisms.
+\[
+\begin{tikzcd}[column sep = small]
+    &
+    (Ff, g)
+    \arrow[dl, swap, "Ff_x"]
+    \arrow[dr, "Ff_y"]
+    &&&&
+    (G \phi f, \alpha_f g)
+    \arrow[dl, swap, "G \phi f_x"]
+    \arrow[dr, "G \phi f_y"]
+    \\
+    (Fx, c)
+    &&
+    (Fy, d)
+    &
+    \mapsto
+    &
+    (G \phi x, \alpha_x c)
+    &&
+    (G \phi y, \alpha_y d)
+\end{tikzcd}\]
+
+\begin{lem}
+    $\alphahat$ is a functor $\Int F \to \Int G$.
+\end{lem}
+\begin{proof}
+    We check that composition is preserved.
+    \begin{align*}
+        \alphahat((h,i) \circ (f,g))
+        &= \alphahat(h \circ f, \psi_? (g,i))
+        \\&= (\phi (h \circ f), \joe{\alpha_{h \circ f} \psi_? (g,i))}
+        \\&= (\phi h \circ \phi f, \joe{ \psi_?(\alpha_f g, \alpha_h i))}
+        \\&= (\phi h, \alpha_h i) \circ (\phi f, \alpha_f g)
+        \\&= \alphahat(h,i) \circ \alphahat(f,g) \qedhere
+    \end{align*}
+\end{proof}
+
+\begin{lem}
+    The following square commutes, so $(\alphahat, \phi)$ forms a morphism in $\Cat^\to$.
+    \[
+    \begin{tikzcd}
+        \Int F
+        \arrow[d, "P_X", swap]
+        \arrow[r, "\alphahat"]
+        &
+        \Int G
+        \arrow[d, "P_Y"]
+        \\
+        X 
+        \arrow[r, swap, "\phi"]
+        &
+        Y
+    \end{tikzcd}
+    \]
+\end{lem}
+\begin{proof}
+    Let $(x,c) \in \Int F$. Then 
+    \[
+        P_Y \alphahat (x,c) = P_Y(\phi x, \alpha_x(c)) = \phi x = \phi P_X(x,c).
+    \]
+    For $(f,g) \maps (x,c) \to (y,d)$ in $\Int F$, we get
+    \[
+        P_Y \alphahat (f,g) = P_Y(\phi f, \alpha_f(g)) = \phi f = \phi P_X(f,g). \qedhere
+    \]
+\end{proof}
+
+\begin{prop}
+\label{thm:intfunctor}
+    $\Int \maps \Disp \to \Cat^\to$ is a functor
+\end{prop}
+\begin{proof}
+    \dots
+\end{proof}
+
+\subsection*{The inverse to the total category functor}
+
+We now define the inverse to $\Int \maps \Disp \to \Cat^\to$, which we call  $\mathscr D \maps \Cat^\to \to \Disp$. Given a functor $F \maps C \to X$, define $\mathscr DF \maps X \to \Span$ as follows. For an object $x$ of $X$, let
+\[
+    \mathscr DF(x) = F\inv (x) = \{c \in C |\, Fc=x\}
+\]
+and for a morphism $f \maps x \to y$ in $X$, let $\mathscr DF(f)$ be the span
+\[
+\begin{tikzcd}
+    &
+    F\inv f
+    \arrow[dl, "s_f", swap]
+    \arrow[dr, "t_f"]
+    \\
+    F\inv x
+    &&
+    F\inv y
+\end{tikzcd}\]
+where $F\inv f$ is the set of morphisms in $C$ that are assigned to $f$ by $F$, and $s_f$ and $t_f$ are the appropriate restrictions of the functions which assign source and target objects respectively to each morphism in $C$.
+
+% \joe{Have to construct the laxator.}
+Given a pair of composable morphisms in $C$
+\[
+    x \xrightarrow f y \xrightarrow g z
+\]
+$F$ gives us a composable pair of spans.
+\[
+\begin{tikzcd}
+    &&
+    F\inv f \times_{F\inv y} F\inv g
+    \arrow[dl]
+    \arrow[dr]
+    \\&
+    F\inv f
+    \arrow[dl, "s_f", swap]
+    \arrow[dr, "t_f"]
+    &&
+    F\inv g
+    \arrow[dl, "s_g", swap]
+    \arrow[dr, "t_g"]
+    \\
+    F\inv x
+    &&
+    F\inv y
+    &&
+    F\inv z
+\end{tikzcd}\]
+The apex of the composite span consists of pairs $(\phi,\psi)$ of morphisms in $C$ such that $F\phi = f$, $F\psi = g$, and $t_f(\phi) = s_g(\psi)$. So they are composable in $C$. Since $F$ is a strict functor, then $F(\psi \circ \phi) = g \circ f$, then we can choose the laxator
+\[
+    F_{x,y} \maps F\inv f \times_{F\inv y} F\inv g \to F(g \circ f)
+\]
+to be the function which gives the composite.
+
+The unitor 
+\[
+\begin{tikzcd}
+    &
+    F\inv x
+    \arrow[dl, "1", swap]
+    \arrow[dd, "\mathscr DF_{1_x}"]
+    \arrow[dr, "1"]
+    \\
+    F\inv x 
+    && 
+    F\inv x 
+    \\&
+    F\inv 1_x
+    \arrow[ul, "s_{1_x}"]
+    \arrow[ur, swap, "t_{1_x}"]
+\end{tikzcd}
+\]
+is given by assigning an object $c \in F\inv x$ to its identity $1_c \in F\inv 1_x$. Since $F$ is a strict functor, then $F(1_c) = 1_x$, so this assignment makes sense.
+
+\begin{lem}
+    $\mathscr DF$ is a lax double functor $X \to \Span$.
+\end{lem}
+\begin{proof}
+    \joe{Probably need to say a bit more about categories being monads in Span before this, or else avoid actually saying this at all.} 
+    The laxator and unitor come directly from the structure which makes $C$ a monad in $\Span$. The necessary identities follow from axioms of a monad.
+\end{proof}
+
+% \joe{Given a square of functors, we define the displayed functor as follows \dots}
+Given a morphism in $\Cat^\to$,
+\[
+\begin{tikzcd}
+    C
+    \arrow[d, swap, "F"]
+    \arrow[r, "\phi_1"]
+    &
+    D
+    \arrow[d, "G"]
+    \\
+    X
+    \arrow[r, swap, "\phi_2"]
+    &
+    Y
+\end{tikzcd}
+\]
+we need to construct the corresponding morphism in $\Disp$.
+\[
+\begin{tikzcd}
+    X
+    \arrow[dd, swap, "\phi_2"]
+    \arrow[dd, phantom, "\Downarrow \widehat\phi", bend left = 60]
+    \arrow[drr, "\mathscr DF"]
+    \\&&
+    \Span
+    \\
+    Y
+    \arrow[urr, swap, "\mathscr DG"]
+\end{tikzcd}
+\]
+The double transformation $\widehat \phi \maps \mathscr F \Rightarrow \mathscr DG \phi_2$ needs to have components of the following form.
+\[
+\begin{tikzcd}
+    \mathscr DFx
+    \arrow[d, swap, "\widehat \phi_x"]
+    &
+    \mathscr DFf
+    \arrow[l, swap, "s_f"]
+    \arrow[d, "\widehat \phi_f"]
+    \arrow[r, "t_f"]
+    &
+    \mathscr DFy
+    \arrow[d, "\widehat\phi y"]
+    \\
+    \mathscr DG\phi_2x
+    &
+    \mathscr DG\phi_2f
+    \arrow[l, "s_f"]
+    \arrow[r, swap, "t_f"]
+    &
+    \mathscr DG\phi_2y
+\end{tikzcd}
+\]
+We abuse the labels $s_f$ and $t_f$ above. If $c$ is an object in $C$ such that $Fc = x$, then by assumption, $\phi_1c$ is an object in $D$ such that $G(\phi_1c) = \phi_2Fc = \phi_2x$. Thus we define $\widehat \phi_f (c) = \phi_1c$. If $k$ is a morphism in $C$ such that $Fk = f$, then by assumption, $\phi_1k$ is a morphism in $D$ such that $G(\phi_1k) = \phi_2Fk = \phi_2f$. Thus we define $\widehat \phi_f (k) = \phi_1k$. 
+
+\begin{prop}
+\label{thm:Dfunctor}
+    $\mathscr D$ is a functor $\Cat^\to \to \Disp$.
+\end{prop}
+\begin{proof}
+    Given composable morphisms in $\Cat^\to$
+    \[
+    \begin{tikzcd}
+        C
+        \arrow[d, swap, "F"]
+        \arrow[r, "\phi_1"]
+        &
+        D
+        \arrow[d, "G"]
+        \arrow[r, "\psi_1"]
+        &
+        E
+        \arrow[d, "H"]
+        \\
+        X
+        \arrow[r, swap, "\phi_2"]
+        &
+        Y
+        \arrow[r, swap, "\psi_2"]
+        &
+        Z
+    \end{tikzcd}
+    \]
+    we can compose them in $\Cat^\to$ and then apply $\mathscr D$, giving
+    \[
+    \begin{tikzcd}
+        C
+        \arrow[d, swap, "F"]
+        \arrow[r, "\psi_1\phi_1"]
+        &
+        E
+        \arrow[d, "H"]
+        \\
+        X
+        \arrow[r, swap, "\psi_2\phi_2"]
+        &
+        Z
+    \end{tikzcd}
+    \quad \mapsto \quad
+    \begin{tikzcd}
+        X
+        \arrow[dd, swap, "\psi_2\phi_2"]
+        \arrow[dd, phantom, "\Downarrow \widehat{\psi\phi}", bend left = 60]
+        \arrow[drr, "\mathscr DF"]
+        \\&&
+        \Span
+        \\
+        Z
+        \arrow[urr, swap, "\mathscr DH"]
+    \end{tikzcd}
+    \]
+    % and then apply $\mathscr D$
+    % \[
+    % \begin{tikzcd}
+    %     X
+    %     \arrow[dd, swap, "\psi_2\phi_2"]
+    %     \arrow[dd, phantom, "\Downarrow \widehat{\psi\phi}", bend left = 60]
+    %     \arrow[drr, "\mathscr DF"]
+    %     \\&&
+    %     \Span
+    %     \\
+    %     Z
+    %     \arrow[urr, swap, "\mathscr DH"]
+    % \end{tikzcd}
+    % \]
+    or we can first apply $\mathscr D$ and then compose them in $\Disp$.
+    \[
+    \begin{tikzcd}
+        X
+        \arrow[d, swap, "\phi_2"]
+        \arrow[drr, "\mathscr DF", bend left]
+        \arrow[dd, phantom, "\Downarrow \widehat \phi", pos = 0.25, bend left = 70]
+        \arrow[dd, phantom, "\Downarrow \widehat \psi", pos = 0.75, bend left = 70]
+        \\
+        Y
+        \arrow[d, swap, "\psi_2"]
+        \arrow[rr, "\mathscr DG"]
+        &&
+        \Span
+        \\
+        Z
+        \arrow[urr, swap, "\mathscr DH", bend right]
+    \end{tikzcd}
+    \quad \mapsto \quad
+    \begin{tikzcd}
+        X
+        \arrow[dd, "\psi_2 \phi_2", swap]
+        \arrow[dd, phantom, "(\phi_2 \ast \widehat \psi) \widehat \phi \Downarrow", bend left = 100]
+        \arrow[drrr, "\mathscr DF"]
+        \\&&&
+        \Span
+        \\
+        Z
+        \arrow[urrr, swap, "\mathscr DH"]
+    \end{tikzcd}
+    \]
+    % and then compose them in $\Disp$.
+    % \[
+    % \begin{tikzcd}
+    %     X
+    %     \arrow[dd, "\psi_2 \phi_2", swap]
+    %     \arrow[dd, phantom, "(\phi_2 \ast \widehat \psi) \widehat \phi \Downarrow", bend left = 100]
+    %     \arrow[drrr, "\mathscr DF"]
+    %     \\&&&
+    %     \Span
+    %     \\
+    %     Z
+    %     \arrow[urrr, swap, "\mathscr DH"]
+    % \end{tikzcd}
+    % \]
+    We must confirm that the result of these two procedures is the same. The frame is already identical as written. The morphism components of $\widehat{\psi\phi}$ are of the form
+    \[\widehat{\psi\phi}_f(k) = \psi_1(\phi_1(k)).\] 
+    The morphism components of $(\phi_2\ast\widehat\psi)\widehat\phi$ are of the form
+    \[(\phi_2\ast\widehat\psi)\widehat\phi_f(k) = \psi_1(\phi_1(k)).\qedhere \]
+\end{proof}
+
+\subsection*{Equivalence}
+
+Now we show that $\Int$ gives an equivalence by showing that $\mathscr D$ is a weak inverse.
+
+\begin{thm}
+\label{thm:dispequivcatarrow}
+    $\mathscr D$ is a weak inverse to $\Int$. In particular, $\Disp \cong \Cat^\to$.
+\end{thm}
+\begin{proof}
+    Let $F \maps C \to X$ be an object in $\Cat^\to$. Define $\varepsilon_F \maps \Int \mathscr DF \to C$ by 
+    \begin{align*}
+        \varepsilon_F(x,c) &= c\\
+        \varepsilon_F(f,g) &= g.
+    \end{align*}
+    Composition is preserved since the decoration is given by the laxator, and the laxator for $\mathscr D$ is given by composition in $C$. Similar for identities. This is obviously surjective on objects and morphisms. If $\varepsilon_F(x,c) = \varepsilon_F(y,d)$, then $x = F(c) = F(d) = y$. Thus $\varepsilon_F$ is injective on objects. Similar for morphisms.
+    
+    The square
+    \[
+    \begin{tikzcd}
+        \Int \mathscr DF
+        \arrow[d, swap, "P_X"]
+        \arrow[r, "\varepsilon_F"]
+        &
+        C
+        \arrow[d, "F"]
+        \\
+        X
+        \arrow[r, swap, "1_X"]
+        &
+        X
+    \end{tikzcd}
+    \]
+    clearly commutes. We refer to the whole square as $\varepsilon_F$ as well. This is an isomorphism in $\Cat^\to$.
+    
+    % \joe{Have to check this is natural in $F$.}
+    Given a morphism $\phi \maps F \to G$ in $\Cat^\to$, we see the square
+    \[
+    \begin{tikzcd}
+        \Int \mathscr DF
+        \arrow[r, "\varepsilon_F"]
+        \arrow[d, swap, "\widehat{\widehat{\phi}}"]
+        &
+        C
+        \arrow[d, "\phi_1"]
+        \\
+        \Int \mathscr DG
+        \arrow[r, swap, "\varepsilon_G"]
+        &
+        D
+    \end{tikzcd}
+    \]
+    commutes because 
+    \begin{align*}
+        \varepsilon_G \widehat{\widehat{\phi}}(x,c)
+        &= \varepsilon_G (\phi_2 x, \widehat \phi (c))
+        \\&= \varepsilon_G (\phi_2 x, \phi_1 (c))
+        \\&= \phi_1(c)
+        \\&= \phi_1 \varepsilon_F (x, c).
+     \end{align*}
+    Thus, the naturality square commutes.
+    \[
+    \begin{tikzcd}
+        \Int \mathscr DF
+        \arrow[r, "\varepsilon_F"]
+        \arrow[d, swap, "\widehat{\widehat{\phi}}"]
+        &
+        F
+        \arrow[d, "\phi"]
+        \\
+        \Int \mathscr DG
+        \arrow[r, swap, "\varepsilon_G"]
+        &
+        G
+    \end{tikzcd}
+    \]
+    
+    Define $\eta \maps 1_\Disp \to \mathscr D\Int$ 
+    \[
+    \begin{tikzcd}
+        X
+        \arrow[rr, "F", bend left, pos = 0.55]
+        \arrow[rr, phantom, "\Downarrow \eta_F"]
+        \arrow[rr, swap, "\mathscr D \Int F", bend right, pos = 0.6]
+        &&
+        \Span
+    \end{tikzcd}
+    \]
+    by
+    \begin{align*}
+        (\eta_F)_x \maps Fx & \to \mathscr D \Int F x
+        \\ 
+        c & \mapsto (x,c)
+        \\
+        (\eta_F)_x \maps Ff & \to \mathscr D \Int F f
+        \\ 
+        g & \mapsto (f,g).
+    \end{align*}
+    These are clearly isomorphisms of sets.
+    
+    
+    \joe{Check the components are lax natural transformations.}
+    
+    \joe{Check it's natural.}
+\end{proof}

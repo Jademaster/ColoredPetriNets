@@ -1,0 +1,15 @@
+\contentsline {subsection}{\tocsubsection {}{0.1}{Related Work}}{2}{subsection.0.1}%
+\contentsline {section}{\tocsection {}{1}{Petri Nets and Their Semantics}}{3}{section.1}%
+\contentsline {section}{\tocsection {}{2}{Colored Petri Nets}}{5}{section.2}%
+\contentsline {section}{\tocsection {}{3}{Operational Semantics for Colored Petri Nets}}{10}{section.3}%
+\contentsline {subsection}{\tocsubsection {}{3.1}{Displayed Categories}}{10}{subsection.3.1}%
+\contentsline {section}{\tocsection {}{4}{The Operational Semantics is Free on the Unfolding}}{13}{section.4}%
+\contentsline {section}{\tocsection {}{5}{Conclusion}}{15}{section.5}%
+\contentsline {section}{\tocsection {Appendix}{A}{Double categories}}{15}{appendix.A}%
+\contentsline {subsection}{\tocsubsection {}{}{Double Categories}}{15}{section*.2}%
+\contentsline {section}{\tocsection {Appendix}{B}{Displayed Categories}}{17}{appendix.B}%
+\contentsline {subsection}{\tocsubsection {}{}{Constructing the category which is displayed}}{17}{section*.3}%
+\contentsline {subsection}{\tocsubsection {}{}{Constructing the functor which is displayed}}{18}{section*.4}%
+\contentsline {subsection}{\tocsubsection {}{}{The inverse to the total category functor}}{20}{section*.6}%
+\contentsline {subsection}{\tocsubsection {}{}{Equivalence}}{22}{section*.7}%
+\contentsline {section}{\tocsection {Appendix}{}{References}}{23}{section*.8}%

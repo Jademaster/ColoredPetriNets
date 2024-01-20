@@ -1,0 +1,153 @@
+\begin{thebibliography}{BMMS01}
+
+\bibitem[AL19]{displayed}
+Benedikt Ahrens and Peter~LeFanu Lumsdaine.
+\newblock Displayed categories.
+\newblock {\em Logical Methods in Computer Science}, 15(1), 2019.
+\newblock Available at
+  \href{https://arxiv.org/abs/1705.04296}{arXiv:1705.04296}.
+
+\bibitem[BC19]{StructuredCospans}
+John~C. {Baez} and Kenny {Courser}.
+\newblock Structured cospans.
+\newblock Available at
+  \href{https://arxiv.org/abs/1911.04630}{arxiv:1911.04630}, 2019.
+
+\bibitem[B{\'e}n00]{benabounotes}
+Jean B{\'e}nabou.
+\newblock Distributors at work, 2000.
+\newblock Lecture notes taken by Thomas Streicher available at
+  \href{http://www.mathematik.tu-darmstadt.de/~streicher/FIBR/DiWo.pdf}{http://www.mathematik.tu-darmstadt.de/~streicher/FIBR/DiWo.pdf}.
+
+\bibitem[BM20]{OpenPetriNets}
+John~C.\ {Baez} and Jade {Master}.
+\newblock Open {Petri} nets.
+\newblock {\em Mathematical Structures in Computer Science}, 2020.
+\newblock To appear. Available at
+  \href{https://arxiv.org/abs/1808.05415}{arXiv:1808.05415}.
+
+\bibitem[BMMS01]{functorialsemantics}
+Roberto Bruni, Jos{\'e} Meseguer, Ugo Montanari, and Vladimiro Sassone.
+\newblock Functorial models for {Petri} nets.
+\newblock {\em Information and Computation}, 170(2):207--236, 2001.
+
+\bibitem[DMM89]{DMM}
+Pierpaolo Degano, Jos{\'e} Meseguer, and Ugo Montanari.
+\newblock Axiomatizing net computations and processes.
+\newblock In {\em Logic in Computer Science, 1989. LICS'89, Proceedings.,
+  Fourth Annual Symposium on}, pages 175--185. IEEE, 1989.
+
+\bibitem[DPP10]{dawson2010span}
+Robert Dawson, Robert Par{\'e}, and Dorette Pronk.
+\newblock The span construction.
+\newblock {\em Theory and Applications of Categories}, 24(13):302--377, 2010.
+
+\bibitem[DS97]{Monoidalbicatshopfalgebroids}
+Brian Day and Ross Street.
+\newblock Monoidal bicategories and {H}opf algebroids.
+\newblock {\em Adv. Math.}, 129(1):99--157, 1997.
+
+\bibitem[evi]{evil}
+Principle of equivalence.
+\newblock {\em web resource}.
+\newblock
+  \href{https://ncatlab.org/nlab/show/principle+of+equivalence}{https://ncatlab.org/nlab/show/principle+of+equivalence}.
+
+\bibitem[GLP22]{Genovese_2022}
+Fabrizio~Romano Genovese, Fosco Loregian, and Daniele Palombi.
+\newblock A categorical semantics for bounded petri nets.
+\newblock {\em Electronic Proceedings in Theoretical Computer Science},
+  372:59–71, November 2022.
+
+\bibitem[GR03]{SGAI}
+Alexander Grothendieck and Michèle Raynaud, editors.
+\newblock {\em Revêtements étales et groupe fondamental: {Séminaire} de
+  {Géometrie} {Algébrique} du {Bois} {Marie} 1960-61, {SGA1}}.
+\newblock Soc. Mathématique de France, Paris, 2003.
+\newblock Available at
+  \href{https://arxiv.org/abs/math/0206203}{arXiv:0206203}.
+
+\bibitem[GS20]{Guarded}
+Fabrizio Genovese and David~I. Spivak.
+\newblock A categorical semantics for guarded {Petri} nets.
+\newblock In Fabio Gadducci and Timo Kehrer, editors, {\em Graph
+  Transformation}, pages 57--74, Cham, 2020. Springer International Publishing.
+\newblock Available as
+  \href{https://arxiv.org/abs/2002.02762}{arXiv:2002.02762}.
+
+\bibitem[Jen81]{jensen}
+Kurt Jensen.
+\newblock Coloured {Petri} nets and the invariant-method.
+\newblock {\em Theoretical Computer Science}, 14(3):317--336, 1981.
+
+\bibitem[Jen13]{jensen2013coloured}
+Kurt Jensen.
+\newblock {\em Coloured {Petri} nets: basic concepts, analysis methods and
+  practical use}, volume~1.
+\newblock Springer Science \& Business Media, 2013.
+
+\bibitem[KLPA06]{kordon2006optimized}
+Fabrice Kordon, Alban Linard, and Emmanuel Paviot-Adet.
+\newblock Optimized colored nets unfolding.
+\newblock In {\em International Conference on Formal Techniques for Networked
+  and Distributed Systems}, pages 339--355. Springer, 2006.
+
+\bibitem[Lak97]{lakosabstraction}
+Charles Lakos.
+\newblock On the abstraction of coloured {Petri} nets.
+\newblock In {\em International Conference on Application and Theory of {Petri}
+  Nets}, pages 42--61. Springer, 1997.
+
+\bibitem[Lak00]{lakoscomposing}
+Charles Lakos.
+\newblock Composing abstractions of coloured {Petri} nets.
+\newblock In {\em International Conference on Application and Theory of {Petri}
+  Nets}, pages 323--342. Springer, 2000.
+
+\bibitem[LHY12]{liu2012efficient}
+Fei Liu, Monika Heiner, and Ming Yang.
+\newblock An efficient method for unfolding colored {Petri} nets.
+\newblock In {\em Proceedings of the 2012 Winter Simulation Conference (WSC)},
+  pages 1--12. IEEE, 2012.
+
+\bibitem[Liu12]{systemsbio}
+Fei Liu.
+\newblock {\em Colored Petri Nets for Systems Biology}.
+\newblock PhD thesis, Brandenburgischen Technischen Universität Cottbus, 2012.
+
+\bibitem[Mas20]{GeneralizedPetriNets}
+Jade Master.
+\newblock Petri nets based on lawvere theories.
+\newblock {\em Mathematical Structures in Computer Science}, 30(7):833--864,
+  2020.
+
+\bibitem[MM90]{monoids}
+Jos{\'e} Meseguer and Ugo Montanari.
+\newblock {Petri} nets are monoids.
+\newblock {\em Information and computation}, 88(2):105--155, 1990.
+
+\bibitem[PA97]{Abramsky}
+D.~Pavlovi{\'c} and S.~Abramsky.
+\newblock Specifying interaction categories.
+\newblock In {\em Category Theory and Computer Science}, volume 1290 of {\em
+  Lecture Notes in Computer Science}, pages 147--158. Springer, Berlin,
+  Heidelberg, 1997.
+
+\bibitem[Sas95]{SassoneStrong}
+Vladimiro Sassone.
+\newblock On the category of {Petri} net computations.
+\newblock In {\em Colloquium on Trees in Algebra and Programming}, pages
+  334--348. Springer, 1995.
+
+\bibitem[Sas96]{SassoneAxiom}
+Vladimiro Sassone.
+\newblock An axiomatization of the algebra of {Petri} net concatenable
+  processes.
+\newblock {\em Theoretical Computer Science}, 170(1-2):277--296, 1996.
+
+\bibitem[Shu08]{FramedBicats}
+Michael Shulman.
+\newblock Framed bicategories and monoidal fibrations.
+\newblock {\em Theory Appl. Categ.}, 20:No. 18, 650--738, 2008.
+
+\end{thebibliography}

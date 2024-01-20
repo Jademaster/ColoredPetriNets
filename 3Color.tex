@@ -1,0 +1,247 @@
+\section{Colored Petri Nets}\label{sec:coloredpetri}
+
+Jensen defined \emph{colored Petri nets} \cite{jensen}, and Lakos rephrased this definition as follows \cite{lakosabstraction}. Note that some sources refer to the following as \emph{colored Petri nets with guards}. 
+
+\begin{defn}[\cite{lakosabstraction} Def.\ 4.8]
+    An (unmarked) \define{colored Petri net with guards} is a tuple \[(P, T, A, C, E)\] where
+    \begin{itemize}
+        \item $P$ is a set of \define{places}
+        \item $T$ is a set of \define{transitions}
+        \item $A \subseteq P \times T \cup T \times P$ is a set of \define{arcs}
+        \item $C$ is an assignment of each place and transition to a color set i.e. a mapping 
+        \[C \maps P + T \to \Set\]
+        \item $E$ is the set of \define{arc inscriptions}. This is a set of functions
+        \[E(a)\maps C(t) \to \N[C(p)] \]
+        for every arc $a=(p, t)$ or $a=(t, p)$ in $A$
+        \end{itemize}
+\end{defn}
+\noindent By this definition, a colored Petri net is a Petri net with a set of colors associated to each place, a set of colors associated to each transition, and functions between the free commutative monoids on each arc. A few remarks:
+
+\begin{itemize} 
+    \item the underlying Petri net $N=(P, T, A)$ of the above defintion can be interpreted as a Petri net in the sense of Definition \ref{def:Petri}. $N$ can be thought of as a pair of functions
+    \[ \begin{tikzcd}T \ar[r, shift left=.5ex, "s"] \ar[r, shift right=.5ex, "t", swap] & \N[P] \end{tikzcd}\]
+    where $s$ and $t$ send a transition $\tau$ to the sum of all places which are connected to $\tau$ by an input arc and output arc respectively.
+    \item The guards are defined implicitly. Transitions which do not fire unless a condition is met are represented by arc inscriptions which produce colorings on the transitions which have no capability of leaving along an output arc inscription.
+\end{itemize}
+Colored Petri nets with guards can be interpreted as an assignment of syntax to semantics. The semantics will be the following double category which is a special case of the double category of spans $\Span(C)$ for a category $C$ with pullbacks (e.g. \cite[\S 3]{dawson2010span}).
+\begin{prop}
+Let $\Span(\Kl(\N))$ denote the double category where 
+\begin{itemize}
+\item objects are sets,
+\item horizontal 1-cells are spans in $\Kl(\N)$\[\begin{tikzcd}
+    \N[X] &\ar[l]  A \ar[r] &\N[Y]
+\end{tikzcd}\]
+\item horizontal composition is given by pullback in $\Kl(\N)$,
+\item vertical 1-cells are functions,
+\item vertical 2-cells are commuting squares
+\[\begin{tikzcd}
+    \N[X] \ar[d,"\N(f)"] &\ar[l]  A\ar[d,"h"] \ar[r] &\ N[Y] \ar[d,"\N(g)"]\\
+    \N[X'] & \ar[l] A' \ar[r] & \N[Y']
+\end{tikzcd}\]
+\item and vertical composition is given by composition of functions.
+\end{itemize}
+\end{prop}
+\begin{prop}
+$\Span(\FCMon)$ may be equipped with the structure of a symmetric monoidal double category (e.g. \ref{defn:symmetric_monoidal_double_category}) $(
+\Span(\FCMon),+)$ where
+\begin{itemize}
+    \item For objects $X,Y$ we have $X + Y$ as their disjoint union,
+    \item For functions $f: X \to Y, g: X' \to Y'$, $f + f' : X +  X' \to Y + Y'$ is their disjoint union.
+    \item on horizontal 1-cells we have
+    \[\begin{tikzcd}
+    \N[X] &\ar[l,"l",swap]  A \ar[r,"r"] &\N[Y] & + & \N[X'] &\ar[l,"l'",swap]  A' \ar[r,"r'"] &\N[Y']
+\end{tikzcd}\]
+
+\[ \begin{tikzcd}
+	& {A + A'} \\
+	{\N[X] + \N[X']} && {\N[Y] + \N[Y']} \\
+	{\N[X + X']} && {\N[Y+Y']}
+	\arrow["{l+l'}"', from=1-2, to=2-1]
+	\arrow["{r+r'}", from=1-2, to=2-3]
+	\arrow["{st_{X,X'}}"', from=2-1, to=3-1]
+	\arrow["{st_{Y,Y'}}", from=2-3, to=3-3]
+\end{tikzcd}\]
+ where $st_{X,X'}$ and $st_{Y,Y'}$ are the components of the strength for $\N$ i.e. the natural transformation $st :  + \circ (\N \times \N) \Rightarrow \N \circ +$ is the copairing of the ``extension" maps $\N[X] \to \N[X + X']$ which send a marking $m$ to the marking that agrees with $m$ and is $0$ elsewhere.
+ \item and the action of plus on 2-cells is given by
+ \[\begin{tikzcd}
+	\N[X] & A & \N[Y] \\
+	\N[Q] & B & \N[R]
+	\arrow["{\N[f]}"', from=1-1, to=2-1]
+	\arrow["l"', from=1-2, to=1-1]
+	\arrow["r", from=1-2, to=1-3]
+	\arrow["{s}", from=2-2, to=2-1]
+	\arrow["{t}"', from=2-2, to=2-3]
+	\arrow["{\N[h]}", from=1-3, to=2-3]
+	\arrow["g", from=1-2, to=2-2]
+\end{tikzcd} + \begin{tikzcd}
+	{\N[X']} & {A'} & {\N[Y']} \\
+	{\N[Q']} & {B'} & {\N[R']}
+	\arrow["{\N[f']}"', from=1-1, to=2-1]
+	\arrow["{l'}"', from=1-2, to=1-1]
+	\arrow["{r'}", from=1-2, to=1-3]
+	\arrow["{s'}", from=2-2, to=2-1]
+	\arrow["{t'}"', from=2-2, to=2-3]
+	\arrow["{\N[h']}", from=1-3, to=2-3]
+	\arrow["{g'}", from=1-2, to=2-2]
+\end{tikzcd}\] 
+\[=\begin{tikzcd}
+	{\N[X+ X']} && {A+A'} && {\N[Y+Y']} \\
+	{\N[Q+Q']} && {B+B'} && {\N[R+R']}
+	\arrow["{st \circ (l + l')}"', from=1-3, to=1-1]
+	\arrow["{st \circ (r + r')}", from=1-3, to=1-5]
+	\arrow["{st \circ (s + s')}", from=2-3, to=2-1]
+	\arrow["{st \circ (t + t')}"', from=2-3, to=2-5]
+	\arrow["{g+g'}", from=1-3, to=2-3]
+	\arrow["{\N[h+h']}", from=1-5, to=2-5]
+	\arrow["{\N[f+f']}"', from=1-1, to=2-1]
+\end{tikzcd}\]
+\end{itemize}
+\end{prop}
+\begin{proof}
+\cite[Ex.\,9.2]{FramedBicats} gives a symmetric cartesian monoidal structure $(\Span(C),\times)$ whenever $C$ has finite limits. We instantiate this in the case when $C = \Kl(\N)$. Note that $+$ is a biproduct on $\Kl(\N)$ which is in particular a cartesian product.
+\end{proof}
+\begin{prop}\label{correspond}
+    A colored petri net with guards $(P, T, A, C, E)$ defines a symmetric monoidal lax double functor
+    \[
+        K \maps FN \to (\mathsf{Span} (\FCMon), +) 
+    \]
+    where $FN$ is the free commutative monoidal category on the underlying Petri net \[N = \begin{tikzcd} T \ar[r, shift left = .5ex, "s"] \ar[r, shift right = .5ex, "t", swap] & \N[P] \end{tikzcd}.\]
+\end{prop}
+
+\begin{proof}
+    Because $FN$ is freely generated both monoidally and compositionally, a functor out of $FN$ which preserves those two operations is uniquely defined by its assignment on generators. A place $p \in P$ is assigned to the free commutative monoid $\N[C(p)]$ and a transition $\tau \maps s(\tau) \to t(\tau) \in T$ is assigned to the span 
+    \[\begin{tikzcd}
+        &
+        \N[C(\tau)]
+        \ar[dl, "({E(x, t)})_{x \in s(\tau)}", swap] 
+        \ar[dr, "({E(t, y)})_{y \in t(\tau)}"] 
+        &\\
+        \bigoplus_{x \in s(\tau)} \N[C(x)] 
+        && 
+        \bigoplus_{y \in t(\tau)} \N[C(y)]
+    \end{tikzcd}\]
+    Where $({E(t, y)})_{y \in t(\tau)}$ denotes the pairing of the arc inscriptions in the input of $\tau$ and $({E(t, y)})_{y \in t(\tau)}$ denotes the pairing of the arcs in the output of $\tau$. The rest of the objects and morphisms in $FN$ are freely generated by the places and transitions of $N$ so their assignment under $K$ is given by composites and direct sums of the above assignments. There is just one subtlety, $(FP, +)$ is strictly monoidal and commutative whereas $(\Span(\FCMon), \otimes)$ only satisfies those properties up to coherent isomorphism. Luckily, the functor $K$ does not need to be strictly monoidal. This means that instead of having $K(a+b) = K(a) \otimes K(b)$, we have a coherent isomorphism \[ 
+        \gamma_{a, b} \maps K(a) \times K(b) \to K(a+b). 
+    \]
+    After choosing an initial association and permutation for the image of every sum in $FN$, this isomorphism will consist of whatever symmetries or associators in $\mathsf{Span}(\FCMon)$ are necessary to preserve the commutativity and associativity equations in $FN$.
+\end{proof}
+To understand this characterization, it is helpful to look at an example.
+\begin{examples}\label{colornet}
+The following colored Petri net models the operation of a vending machine which dispense candy bars for $25 \cent$ and apples for $75 \cent$:
+    \[
+\begin{tikzpicture}
+        \node (ca) at (0.5,0.5) {$\{\text{apple},\text{bar} \}$};
+        \node (cb) at (0.5,-0.5) {$\{25\cent,50\cent\}$};
+        \node (cc) at (-5.5,0) {$\{25 \cent,50\cent\}$};
+        \node [style=place] (C) at (-1, .5) {};
+        \node [style=place] (B) at (-1, -0.5) {};
+        \node [style=place] (A) at (-4, 0) {};
+        \node [style=transition] (tau1) at (-2.5, 0) {$\text{buy}$}
+        edge [pre] (A)
+        edge [post] (B)
+        edge [post] (C);
+\end{tikzpicture}\]
+There are three species representing coins going in, food products going out, and coins going out. For each place, its set of colors is indicated next to it. The set of colors and their arc inscriptions are indicated as follows:
+\begin{align*}
+   25 \cent + 50 \cent & \leftmapsto  \text{a1}\mapsto (\text{apple},0)\\
+  2 \cdot 50 \cent  & \leftmapsto \text{a2} \mapsto   (\text{apple},50\cent) \\
+    3 \cdot 25 \cent  & \leftmapsto \text{a3} \mapsto   (\text{apple},0) \\
+      25 \cent  & \leftmapsto \text{b1} \mapsto   (\text{bar},0) \\
+    50 \cent  & \leftmapsto \text{b2} \mapsto   (\text{bar},25 \cent) \\
+    25 \cent & \leftmapsto \text{e1} \mapsto (0,25 \cent)\\
+        50 \cent & \leftmapsto \text{e2} \mapsto (0,50 \cent)
+\end{align*}
+The middle column gives the colors of the transition $\text{buy}$ and the columns to its left and right give the arc inscriptions for these colors on the input and output places respectively. Note that this table can be read as a span of free commutative monoids
+\[\begin{tikzcd}\N[\{25 \cent, 50 \cent\} & \ar[l] \N[C
+(\text{buy})] \ar[r] & \N[25 \cent, 50\cent] \oplus \N[\text{apple},\text{bar}] \end{tikzcd}\]
+where $C(\text{buy})$ is the set whose elements are given by the middle column above. Let $P$ be the underlying Petri net.The above data defines a symmetric monoidal double functor $K \maps FP \to \Span(\FCMon)$. The assignment on generators of $FP$ is shown above, and this assignment is freely extended to monoidal products and composites.
+\end{examples}
+One advantage of phrasing colored Petri nets in categorical terms is that it gives a natural definition of morphism between colored Petri nets:
+
+\begin{defn}\label{morphism}
+    Let $K \maps FP \to \Span(\FCMon)$ and $K' \maps FP' \to \Span(\FCMon)$ be colored Petri nets. Then a \define{morphism of colored Petri nets} $(f, g, \alpha)$ is a morphism of Petri nets $(f, g) \maps P \to P'$ and a monoidal vertical transformation $\alpha$ of the following shape.
+    \[
+    \begin{tikzcd}
+        FP 
+        \ar[dd, "{F(f, g)}", swap] 
+        \ar[dr, "K"{name=U}, pos=0.2]
+        &\\&  
+        \Span(\FCMon)
+        \\
+        FP'
+        \ar[ur, "K'"{name=D}, swap, pos=0.15]
+        & 
+        \arrow[Rightarrow, from = U, to = D, shorten <=3ex, shorten >=3ex, "\alpha", swap]
+    \end{tikzcd}
+    \]
+\end{defn}
+\noindent Because this vertical transformation is monoidal, it suffices to define it on the generators of $FN$, i.e.\ the places and transitions of $N$ and not arbitrary sums of those places and transitions. Therefore, a vertical transformation as above consists of the following:
+\begin{itemize}
+    \item For each place $p$ a function between the color sets $\alpha_p \maps K(p) \to K'(g(p)) $. Because $FP$ is made into a double category trivially, the naturality square at this level is trivial.
+    \item For each transition $\tau$, a morphism of spans i.e. a commuting diagram of the form
+    \[
+    \begin{tikzcd}
+    K(s(\tau))\ar[d] & \ar[d]K(\tau) \ar[l] \ar[r] &\ar[d] K(t(\tau)) \\
+    K'(s'(f(\tau)))) & K'(f(\tau)) \ar[l] \ar[r] & K'(t'(f(\tau)))
+    \end{tikzcd}
+    \]
+    Because $FP$ has trivial vertical 2-cells, the naturality square at this level is also trivial.
+    \item vertical transformations between double categories are required to respect composition and identities. Respecting identities is the condition that the morphism between identity spans
+ \[
+     \begin{tikzcd}
+    K(x)\ar[d, "\alpha_x"] & \ar[d]K(x) \ar[l, equal] \ar[r, equal] &\ar[d, "\alpha_x"] K(x) \\
+    K'(g(x)) & K'(g(x)) \ar[l, equal] \ar[r, equal] & K'(g(x))
+    \end{tikzcd}
+    \]
+    has all three components given by $\alpha_x$. Respecting composition boils down to the requiring that $\alpha$ is built by extending its value on generators. For composable morphisms $\tau \maps x \to y$ and $\kappa \maps y \to z$ in $FN$, $\alpha$ gives the morphism of spans
+    \[
+    \begin{tikzcd}
+    K(x)\ar[d, "\alpha_x"] & \ar[d, "\alpha_{K(\kappa \circ \tau)}"]K(\tau) \times_{K(y)} K(\kappa) \ar[l] \ar[r] &\ar[d, "\alpha_z"] K(z) \\
+    K'(g(x)) & K'(f(\tau)) \times_{K'(g(y))} K'(f(\kappa)) \ar[l] \ar[r] & K'(g(z))
+    \end{tikzcd}
+    \]
+    respecting composition requires that the arrow $\alpha_{K (\kappa \circ \tau))}$ is equal to the pullback of arrows $\alpha_{K(\tau)} \times_{\alpha_{K(y)}} \alpha_{K(\kappa)}$.
+\end{itemize}
+
+In \cite{lakosabstraction}, Lakos also defined morphisms of colored Petri nets. Roughly, a morphism from a colored Petri net $K=(P, T, A, C, E)$ to a colored Petri net $K'=(P', T', A', C', E')$ is a function between each set which can optionally satisfy the following properties:
+\begin{itemize}
+    \item {\bf Structure Respecting:} A morphism of colored Petri nets is structure respecting if it preserves arcs. This means that if an arc $a$ of $K$ connects a transition $t$ and a place $p$, then the image of this arc should connect the image of $t$ to the image of $p$. The above definition is structure respecting because it contains a morphism of the underlying Petri nets
+    \item {\bf Color Respecting:} A morphism is color respecting if it sends the color on a place or a transition to a subset of the colors on the image of that place or transition. Our definition weakens this definition by requiring that there is an arbitrary monoid homomorphism between the two relevant color sets rather than an inclusion. A color respecting morphism must also preserve arc inscriptions. This is reflected in our definition by that fact that the components of $\alpha$ on the transitions are commuting diagrams of spans.
+\end{itemize}
+Two morphisms of colored Petri nets can be composed by composing each component separately. This forms the structure of a category.
+\begin{defn}
+Let \define{$\cPetri$} be the category of colored Petri nets and their morphisms.
+\end{defn}
+%\begin{prop}
+% \label{prop:iso}
+%     A morphism between Petri nets is an isomorphism if and only if both parts are isomorphisms.
+% \end{prop}
+
+% The category of colored Petri nets enjoys many nice properties
+% The category of colored Petri nets can be constructed as a comma category.
+
+% \begin{defn}
+%     Let $\namedcat{cPetri}$ be the lax comma category
+%     \[
+%         (F \downarrow (\Set, \times) )_{\mathsf{MonLax}} 
+%     \]
+%     where the objects are monoidal functors $K \maps FP \to \PSet$ and the morphisms are natural transformations 
+%     This is the category where objects are colored Petri nets and morphisms are the morphisms of colored Petri nets described above.
+% \end{defn}
+
+% Any uncolored Petri net can be thought of as a colored Petri net where all the color sets are singletons. Formally, any Petri net $P$ admits a constant functor $\Delta 1 \maps FP \to \PSet$. 
+
+% This extends to a functor $T \maps \Petri \to \cPetri$ which we name the \define{trivial-coloring} functor.
+
+% \begin{prop}
+% \label{prop:embed}
+%     The trivial-coloring functor gives an embedding of the category $\Petri$ of (uncolored) Petri nets into the category $\cPetri$ of colored Petri nets.
+% \end{prop}
+
+% \joe{not that this is not full because of guards\dots}
+
+% \begin{proof}
+%     Assume that there are Petri nets $P$ and $Q$ such that $TP \cong TQ$. Let \[(f, g, \alpha) \maps TP \xrightarrow{\sim} TQ\] be an isomorphism. In particular $P$ and $Q$ are isomorphic. 
+    
+%     Fix Petri nets $P$ and $Q$ assume $f, g \maps P \to Q$ are morphisms of Petri nets such that $Tf = Tg$. Then $Ff = Fg$, and thus $f=g$. \joe{This clearly depends on $F$ being faithful. Is this true?}
+% \end{proof}

@@ -1,0 +1,100 @@
+\section{Petri Nets and Their Semantics}
+\label{sec:petri}
+
+One one hand, Petri nets can be thought of as (directed, multi-) graphs with two distinct types of nodes. However, it is more in line with the spirit  of Petri nets to think of them as graphs in which arrows are permitted to have a multiset of source nodes, and a multiset of target nodes. 
+
+% whose vertices form a free commutative monoid. Directed multigraphs can be represented as a pair functions from a set of edges to a set of vertices. Petri nets can also be defined in this way.
+
+Recall that the free commutative monoid on a set $X$ is given by 
+\[
+    \N[X]  = \{ a \maps X \to \N \, | \, f(x) \neq 0 \text{ for only finitely many elements of } X \} 
+\]
+with addition given pointwise.
+To keep notational overhead low, we let $\N$ denote the free commutative monoid monad $\N \maps \Set \to \Set$.
+
+% Commutative monoids play a central role in this paper. Petri nets are defined as a pair of functions into a free commutative monoid. Colored Petri nets can be recast as a suitable mapping between different sorts of structured commutative monoids. In short, commutative monoids show up everywhere in this paper. A productive way to make lots of examples of commutative monoids is to generate them freely.
+
+% $\N[X]$ forms a commutative monoid under pointwise additions and there is an embedding $\eta_X \maps X \to \N[X]$ defined by sending an element $x \in X$ to the function which is $1$ on $x$ and zero everywhere else. For a function $f\maps X \to Y$, the monoid homomorphism $\N[f] \maps \N[X] \to \N[y]$ is defined to be the unique extension of $\eta_X$ to sums.
+
+% In this paper we consider Petri nets with categorical semantics valued in the Kleisli category of $\N$.
+% \begin{defn}
+%    Let $\FCMon$ be the Kleisli category of the monad $\N$. More explicitly be the category where objects are sets and a morphism is a function $X \to \N(Y)$ and composition is given by the monad multiplication of $\N$. $(\FCMon,+)$ is symmetric monoidal with disjoint union of sets. 
+% \end{defn}
+
+
+\begin{defn}
+\label{def:Petri}
+    A \define{Petri net} is a pair of functions of the following form.
+    % \[\xymatrix{ T \ar@<-.5ex>[r]_-t \ar@<.5ex>[r]^-s & \N[S]. } \]
+    \[\begin{tikzcd}
+        T 
+        \arrow[r, shift left, "s"]
+        \arrow[r, shift right, "t", swap]
+        & 
+        \N[S]
+    \end{tikzcd}\]
+    We call $T$ the set of \define{transitions}, $S$ the set of \define{places}, $s$ the \define{source} function and $t$ the \define{target} function. A \define{Petri net morphism} $(f,g) \maps (T,S,t,s) \to (T',S',t',s')$ consists of a pair of functions $f \maps T \to T'$ and $g \maps S \to S'$ such that the following diagrams commute.
+    \[
+    \begin{tikzcd}
+        T
+        \arrow[r, "s"]
+        \arrow[d, "f", swap]
+        &
+        \N[S]
+        \arrow[d, "{\N[g]}"]
+        \\
+        T'
+        \arrow[r, "s'", swap]
+        &
+        \N[S']
+    \end{tikzcd}
+    \qquad
+    \begin{tikzcd}
+        T
+        \arrow[r, "t"]
+        \arrow[d, "f", swap]
+        &
+        \N[S]
+        \arrow[d, "{\N[g]}"]
+        \\
+        T'
+        \arrow[r, "t'", swap]
+        &
+        \N[S']
+    \end{tikzcd}\] 
+    Let $\Petri$ denote the category of Petri nets and Petri net morphisms, with composition defined pointwise.
+\end{defn}
+
+\noindent Our definition of morphisms between Petri nets follows that found in the work of Baez and Master \cite{GeneralizedPetriNets, OpenPetriNets}. This differs from the earlier definition used by Sassone \cite{SassoneStrong, SassoneAxiom} and Degano--Meseguer--Montanari \cite{DMM}, in that the definition presented here requires that the homomorphism between free commutative monoids come from a function between the sets of places. We have chosen our definitions because they are more well-behaved categorically. In particular, our category $\Petri$ is cocomplete (\cite{GeneralizedPetriNets}, Prop.\ 3.10).
+
+Petri nets have a natural semantics which is described by \emph{the token game}. Each place of a Petri net is equipped with a natural number of tokens.  Such an assignment is called a \define{marking}, and is formally represented by an element $m \in \N[S]$, or equivalently, a function $m \maps S \to \N$. Players are then allowed to shuffle the tokens around by \emph{firing} transitions. Given a particular marking $m$, a transition $\tau$ can be fired if there are enough tokens in all of its source places. Specifically, $\tau$ can be fired if and only if $s(\tau) \leq m$ under the pointwise order on $\N[S]$. Formally, a \define{firing} of $P$ is a tuple $(\tau,x,y)$, where $\tau$ is a transition and $x$ and $y$ are markings such that $x-s(\tau) + t(\tau) = y$. Evocatively, we write such tuples as $\tau \maps x \to y$. 
+
+Notice that the same transition is generally a component of many firings which while technically distinct, exhibit essentially the same action. 
+
+If there are enough tokens in an initial marking, transitions can be fired in sequence and in parallel. This is how Petri nets are used to model distributed systems. Given two firings $\tau \maps x \to y$ and $\tau' \maps x' \to y'$, we write their parallel firing as $\tau + \tau'  \maps x + x' \to y + y'$, where the sum of the markings is the sum in $\N[S]$. Given two firings $\tau \maps x \to y$ and $\sigma \maps y \to z$, we write their sequential firing as $\sigma \circ \tau \maps x \to z$. 
+
+As suggested by our choice of notation, these operations fit together into the structure of a monoidal category, which we will denote as $FP$. The objects of $FP$ are markings of $P$, the morphisms are ``firing patterns'', or legal sequences of transition firings, potentially in parallel, up to a very natural equivalence of patterns. Meseguer and Montanari were the first to demonstrate the relationship between Petri nets and symmetric monoidal categories \cite{monoids}.
+Petri nets generate a specific kind of symmetric monoidal category.
+\begin{defn}
+A \define{commutative monoidal category} is a commutative monoid object internal to the 1-category $\Cat$. Explicitly, a commutative monoidal category is a strict monoidal category $(C,\otimes,I)$, such that each symmetry map $\sigma_{a,b} \colon a \otimes b \to b \otimes a$ is an identity map.
+\end{defn}
+% Note that a commutative monoidal category is the same as a strict symmetric monoidal category where the symmetry isomorphisms $\sigma_{a,b} \maps a \otimes b \stackrel{\sim}{\longrightarrow} b \otimes a$ are all identity morphisms. 
+\noindent A commutative monoidal category is precisely a category where the objects and morphisms form commutative monoids and the structure maps are commutative monoid homomorphisms. 
+\begin{defn}
+	Let $\CMC$ be the category whose objects are commutative monoidal categories and whose morphisms are strict monoidal functors.
+\end{defn}
+\noindent Note that every monoidal functor between commutative monoidal categories is automatically a strict symmetric monoidal functor, so the adjective symmetric is not included in the above definition. 
+\begin{prop}
+There is an adjunction
+\[
+\begin{tikzcd}
+\Petri \ar[r,bend left,"F"] \ar[r,phantom,"\bot"] & \CMC \ar[l,bend left,"U"] 
+\end{tikzcd}
+\]
+whose left adjoint generates the free commutative monoidal category on a Petri net.
+\end{prop}
+
+
+\begin{proof}
+    This is a special case of \cite[Thm.\ 5.1]{GeneralizedPetriNets} which shows that there is similar adjunction for any Lawvere theory $\mathsf{Q}$. When $\mathsf{Q}$ is the Lawvere theory for commutative monoids this theorem gives the desired adjunction. The above Theorem also contains a description of this left adjoint in more detail. 
+\end{proof}

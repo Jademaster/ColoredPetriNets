@@ -1,0 +1,555 @@
+\section{Operational Semantics for Colored Petri Nets}\label{sec:unfolding}
+Given a colored Petri net, there is a way to associate a category whose morphisms represent executions of your colored Petri net. To make this precise we will use the notion of step sequence. In \cite{lakosabstraction} these concepts are defined, here we adapt these definitions to our purposes:
+\begin{defn}
+Let $P$ be the petri net $\begin{tikzcd}T \ar[r,shift left=.5ex] \ar[r,shift right=.5ex] & \N[S] \end{tikzcd}$.
+A \define{marking} of a colored Petri Net $K \maps FP \to \Span(\FCMon)$ is a pair $(m,x)$ where $m$ is a marking of the Petri $P$ and $x$ is an element of $K(m)$. A \define{step} of $K$ with \define{source} $(m,x)$ and \define{target} $(n,y)$ is a tuple $(\tau,f)$ where
+\begin{itemize}
+    \item $\tau$ is an element of $\N[T]$ with source given by $m$ and target given by $n$ and,
+    \item $f$ is an element of the apex of $K(\tau)$ whose image under the left and right legs of $K(\tau)$ are given by $x$ and $y$ respectively.
+\end{itemize}
+A \define{step sequence} is a sequence of composable steps $\{(\tau_i,f_i)\}_{i=1}^{k}$. Composable means that the target of $(\tau_i,f_i)$ is equal to the source of $(\tau_{i+1},f_{i+1})$ for all $1<i<k$. In particular, setting $k=0$ gives a step sequence from every marking to itself. The source of a step sequence is defined to be the source of its first step and the target of a step sequence is the target of its last step.
+\end{defn}\noindent Our categorical operational semantics will use the Grothendieck construction for displayed categories. 
+
+\subsection{Displayed Categories}
+
+\begin{defn}
+    A \define{displayed category} over $C$ is a lax double functor 
+    \[ F \maps C \to \Span(\Set)\]
+\end{defn}
+Displayed categories have been studied by many authors. For example, see Jean B\'enabou's lecture notes \cite{benabounotes}. The term displayed categories was first coined in  \cite{displayed}. %These are called displayed categories because they give a nice way of presenting a category $\int D$ equipped with a functor to $C$. 
+The construction of $\int D$ is a generalization of the Grothendieck construction \cite{SGAI}.
+
+\begin{defn}\label{totalcat}
+For a displayed category $F \maps C \to \Span(\Set)$ its total category $\int F$ is a category where:
+\begin{itemize}
+    \item An object is a tuple $(c,x)$ where $c$ is an object of $C$ and $x \in F(c)$.
+    \item Let $f \maps c \to d$ be a morphism in $C$ with image
+    \[\begin{tikzcd}
+     & F(f)\ar[dr,"b"] \ar[dl,"a",swap]& \\
+    F(c) & & F(d) \end{tikzcd} \]
+    then for every object $r \in F(f)$, there is a morphism $(f,r) \maps (c,a(r)) \to (d,b(r))$.
+    \item For morphisms $(f,r) \maps (c,x) \to (d,y)$ and $(g,s) \maps (d,y) \to (e,z)$ their composite is defined to be $(g \circ f, t) \maps (c,x) \to (e,z)$ where $t$ is the image of the pair $(r,s)$ under the laxator of $F$
+    \[F(f) \times_{F(d)} F(g) \to F(g \circ f). \]
+    \end{itemize}
+    $\int F$ is equipped with a functor 
+    \[\Int F \to C \]
+    which sends every object and morphism to its first component.
+\end{defn}
+Displayed categories form a category and the total category construction is a functor.
+\begin{defn}
+Let $F \maps C \to \Span(\Set)$ and $G \maps D \to \Span(\Set)$ be displayed categories. Then a \define{morphism of displayed categories} $(j,\alpha) \maps F \to G$ is a functor $j \maps C \to D$  and a vertical transformation between double functors filling the following diagram
+\[
+    \begin{tikzcd}
+        C
+        \ar[dd,"{j}",swap] 
+        \ar[dr,"F"{name=U},pos=0.2]
+        &\\&  
+        \Span(\Set)
+        \\
+    D
+        \ar[ur,"G"{name=D}, swap, pos=0.2]
+        & 
+        \arrow[Rightarrow, from = U, to = D, shorten <=3ex, shorten >=3ex, "\alpha", swap]
+    \end{tikzcd}
+    \]
+ This defines a category $\define{\mathsf{Disp}}$ with composition defined as composition of vertical transformations. Let $\Cat^2$ be the category where objects are functors $D \to C$ and morphisms are commuting squares
+\[\begin{tikzcd}
+D \ar[d] \ar[r] & D' \ar[d]\\
+C \ar[r] & C'
+\end{tikzcd}
+\]
+
+
+\end{defn}
+The following result, although very fundamental, has no reference as explained in \cite{Abramsky}. Therefore it is a result of folklore. In this paper, we remove the folklore status of this theorem and prove it in Section \ref{display}.
+\begin{thm}
+The total category construction gives an equivalence 
+\[ \int \maps \mathsf{Disp} \xrightarrow{\sim} \Cat^2.\]
+\end{thm}
+% \begin{proof}
+%     The following result, although very fundamental, has no reference as explained in \cite{Abramsky}. Therefore it is a result of folklore.
+%     \begin{lem}\label{folklore}
+%         Let $\mathsf{Disp}(C)$ be the category where objects are displayed categories over $C$ and morphisms are vertical transformations and let $\Cat/C$ be the category where objects are functors $D \to C$ and morphisms are commuting triangles. Then, the total category construction forms an equivalence
+%         \[\mathsf{Disp}(C) \xrightarrow{\sim} \Cat/C\]
+%     \end{lem}
+%     This equivalence can be used to build the desired equivalence using the Grothendieck construction. Let $\CAT$ be the category of large categories for which $\Cat$ is an object. There is a contravariant functor
+%     \[
+%         \mathsf{Disp}(-) \maps \Cat^{op} \to \CAT 
+%     \]
+%     which sends a category $C$ to the category of displayed categories over $C$. For a functor $F \maps C \to C'$, there is a functor 
+%     \[
+%         \mathsf{Disp} (F) \maps \mathsf{Disp} (C') \to \mathsf{Disp}(C)
+%     \] 
+%     which sends a displayed category to its precomposition with $F$. Similarly, there is a functor 
+%     \[
+%         \Cat/(-) \maps \Cat^{op} \to \CAT 
+%     \]
+%     which send a category $C$ to the slice category $\Cat/C$ and a functor $F \maps C \to C'$ to the functor
+%     \[\Cat/F \maps \Cat/C \to \Cat/C' \]
+%     which sends a category over $C$ to its composition with $F$. One variant of the Grothendieck construction is a functor
+%     \[
+%         G \maps (-)/\CAT \to \CAT 
+%     \]
+
+% % The total category construction defined above forms a functor
+% % \[\int \maps \mathsf{Disp} (C) \to \Cat/C. \]
+% % For a vertical transformation $\alpha \maps (F \maps C \to \Span(\Set)) \Rightarrow (G \maps C \to \Span(\Set))$, there is a functor 
+% % \[\int \alpha \maps \int F \to \int G \]
+% % which sends
+% % \begin{itemize}
+% %     \item an object $(c,x)$
+% % \end{itemize}
+% \end{proof}
+% The total category construction makes up the second half of the operational semantics for colored Petri nets. Before taking the total category, colored Petri nets must be converted into displayed categories. To this end, we seek an information preserving functor 
+% \[A \maps \cPetri \to \Disp. \]
+% This is accomplished by unfolding the colors of each transition and moving the monoidal structure in the fibers into the underlying Petri net.
+
+% Suppose that $K \maps FP \to \Span(\FCMon)$ is a colored Petri net. Let $A(K) \maps FQ \to \Span(\Set)$ be the displayed category constructed as follows: Let 
+% \[\tau \maps \sum x_i \to \sum y_j \]
+% Then $K$ maps $\tau$ to the span
+% \[\begin{tikzcd}& \ar[dl,"a",swap] K(\tau) \ar[dr,"b"] & \\
+% K(x_1) \oplus K(x_2) \ldots  & & K(y_1) \oplus K(y_2) \ldots \end{tikzcd}. \]
+% The free commutative monoids $K(x)$ are generated by color sets which we denote by $C(x)$. The free commutative monoid $K(x)$ has the formula
+% \[ K(x) = \sum_{n \geq 0} \tilde{C(x)^n}\]
+% where $\tilde{C(x)^n}$ indicates the quotient of the product $C(x)^n$ by the natural action of the symmetric group on $n$-elements. With this formula, the span corresponding to $K(\tau)$ looks like
+% \[\begin{tikzcd}& \ar[dl,"a",swap] C(\tau) \ar[dr,"b"] & \\
+% \sum_{n \geq 0} \tilde{C(x_1)}^n \times \sum_{n \geq 0} \tilde{C(x_2)}^n   \ldots  & &\sum_{n \geq 0} \tilde{C(y_1)}^n \times \sum_{n \geq 0} \tilde{C(y_2)}^n \ldots \end{tikzcd}. \]
+% Now this span is regarded as living in $\Set$ and the commutative monoid homomorphisms $a$ and $b$ are equivalently written by their restriction to generators. For every finite sequence of natural numbers $m_1 ,\ldots, m^k$ and $n_1,\ldots,n_j$ define the set
+% \[ \tau_{m_1m_2\ldots n_1 n_2 \ldots} =  a^{-1} (C(x_1)^{m_1}, C(x_2)^{m_2}, \ldots) \cap b^{-1} (C(y_1)^{n_1}, C(y_2)^{n_2}, \ldots)\]
+% which captures all the colors of $\tau$ which have the same arity. The Petri net $Q$ will have one transition for every non-empty $\tau_{m_1m_2\ldots n_1 n_2 \ldots}$ with source and target having the appropriate arities. Indeed let $Q$ be a Petri net with transitions given by \[T = \{\text{ non-empty }\tau_{m_1m_2\ldots m_kn_1n_2\ldots n_j} \, | \, \tau \maps \sum_{i=1}^n x_i \to \sum_{i=1}^j y_i \text{ is a transition in $P$}\}  \]
+% The source of $\tau_{m_1m_2\ldots n_1 n_2 \ldots}$, denoted $s(\tau_{m_1m_2\ldots n_1 n_2 \ldots})$, is given by $\sum m_i x_i$ and the target $t(\tau_{m_1m_2\ldots n_1 n_2 \ldots})$ is given by $\sum n_i y_i$. The strong double functor 
+% \[A(K) \maps FQ \to \Span(\Set)\]
+% on generating objects sends a place $p$ to its color set $C(p)$. A generating morphism, i.e. a transition $\tau_{m_1m_2\ldots n_1 n_2 \ldots} \in T$, is sent to the span
+% \[
+% \begin{tikzcd}& \ar[dl,"a",swap] \tau_{m_1m_2\ldots n_1 n_2 \ldots}  \ar[dr,"b"] & \\
+% C(x_1)^{m_1} \times C(x_2)^{m_2} \ldots  & &C(y_1)^{n_1} \times C(y_2)^{n_2} \times  \ldots \end{tikzcd}.\]
+% The assignment of $A(K)$ on the other objects and morphisms is uniquely determined by strong functoriality and strong monoidality of $A(K)$. This definition is functorial.
+% \begin{defn}
+% Let
+% \[A \maps \cPetri \to \Disp\]
+% be the functor which sends a colored Petri net $K \maps FP \to \Span(\FCMon)$ to the displayed category $A(K) \maps FQ \to \Span(\Set)$ defined above. For a morphism of colored Petri nets,
+%  \[
+%     \begin{tikzcd}
+%         FP 
+%         \ar[dd, "{F(f, g)}", swap] 
+%         \ar[dr, "K"{name=U}, pos=0.2]
+%         &\\&  
+%         \Span(\FCMon)
+%         \\
+%         FP'
+%         \ar[ur, "K'"{name=D}, swap, pos=0.15]
+%         & 
+%         \arrow[Rightarrow, from = U, to = D, shorten <=3ex, shorten >=3ex, "\alpha", swap]
+%     \end{tikzcd}
+%     \]
+%     there is a morphism of displayed categories
+%      \[
+%     \begin{tikzcd}
+%         FQ 
+%         \ar[dd, "{A(f, g)}", swap] 
+%         \ar[dr, "A(K)"{name=U}, pos=0.2]
+%         &\\&  
+%         \Span(\Set)
+%         \\
+%         FQ'
+%         \ar[ur, "A(K')"{name=D}, swap, pos=0.15]
+%         & 
+%         \arrow[Rightarrow, from = U, to = D, shorten <=3ex, shorten >=3ex, "A(\alpha)", swap]
+%     \end{tikzcd}
+%     \]
+% \end{defn}
+% where
+% \begin{itemize}
+% \item $A(f,g)$ is given by $\N[g]$ on objects. Recall that for a morphism $\tau \maps \sum_{i=1}^n x_i \to \sum_{i=1}^j y_i$ the vertical transformation $\alpha$ gives commutative monoid homomorphisms
+%  \[
+%     \begin{tikzcd}
+%     K(\sum_{i=1}^n x_i)\ar[d] & \ar[d,"\alpha_{\tau}"]K(\tau) \ar[l] \ar[r] &\ar[d] K(\sum_{i=1}^j y_i) \\
+%     K'(\sum_{i=1}^n g(x_i)) & K'(f(\tau)) \ar[l] \ar[r] & K'(\sum_{i=1}^j g(y_i))
+%     \end{tikzcd}
+% \]
+
+% The set $\tau_{m_1m_2\ldots m_j n_1 n_2 \ldots n_k}$ has an image under $\alpha_\tau$
+% \end{itemize}
+\begin{prop}
+    There is a symmetric monoidal double functor 
+    \[ U : \Span(\FCMon) \to \Span\]
+    given by 
+    \begin{itemize}
+        \item  on objects $ \lambda X \mapsto \N[X]$,
+        \item leaving horizontal 1-cells unchanged,
+        \item on vertical 1-cells sending a function $f: X \to Y$ to the function $\N[f] : \N[X] \to \N[Y]$,
+        \item and leaving vertical 2-cells unchanged.
+    \end{itemize}
+\end{prop}
+We may compose a colored Petri net $K : FN 
+\to \Span(\FCMon)$ with the double functor $U$ to obtained a displayed category $U \circ K : FN \to \Span$.
+
+
+% Every colored Petri net gives a displayed category in a standard way. Let
+% \[U \maps \FCMon \to \Set \] 
+% be the forgetful functor which sends every commutative monoid to its underlying set and every monoid homomorphism to its underlying function. Then because $U$ is a right adjoint, it preserves limits and extends to a double functor 
+% \[\Span(U) \maps \Span(\FCMon) \to \Span(\Set). \]
+% Every colored Petri net $K \maps FN \to \Span(\FCMon)$ can be composed with $\Span(U)$ as follows
+% \[\begin{tikzcd}
+% FN \ar[r,"K"] & \Span(\FCMon) \ar[r,"\Span(U)"] & \Span(\Set)
+% \end{tikzcd} \]
+% to get a displayed category. This defines a functor 
+% \[\Span(U)_* \maps \cPetri \to \Disp \]
+% which sends a colored Petri net to the composite shown above and a morphism of colored Petri nets it's whiskering with $\Span(U)$. Note that because $U$ is forgetful, the functor $\Span(U)_*$ does not alter the data of colored Petri nets and their morphisms. Thus when defining the operational semantics, we will abuse notation and refer to composite 
+% $\Span(U)_* \circ \int$ with the symbol $\int$.
+
+% On a first take, it may seem like $\int K$ gives the operational semantics of $K$. However, this category overcounts the processes of $K$.
+
+% \subsection{Colored Petri Nets are Redundant} Within a colored Petri net, there are always many ways to represent a given process. To see this let us return to the colored Petri net $K$ in Example \ref{colornet}. Suppose we want to buy both a candy bar and an apple. Then there is step 
+% \[((\text{buy}, \text{a1} + \text{b1})\maps (\text{coinin},25\cent + 25\cent + 50 \cent) \to (\text{coinout},(\text{apple} +
+%  \text{bar},0))\]
+%  in $K$. On the other hand, the following two steps can be performed in parallel
+%  \[ (\text{buy},\text{a1}) + (\text{buy},\text{b1}) \maps (\text{coinin}, 25 \cent) + (\text{coinin}, 25 \cent + 50 \cent ) \to (\text{coinout}, (\text{apple},0) + (\text{coinout},(\text{bar},0))\]
+% Both of these expressions are morphisms in the category $\int K$ but they represent 
+\begin{defn}\label{semantics}
+The \define{categorical operational semantics functor} for colored Petri nets 
+\[\int \maps \cPetri \to \Cat \]
+is the composition of $\int \maps \Disp \to \Cat$ with $\Span(U) \maps \cPetri \to \Disp$.
+Explicitly, for a colored Petri net $K \maps FP \to \Span(\FCMon)$ to the category $\int K$ where:
+\begin{itemize}
+    \item An object is a pair $(m, x)$ where $m$ is an object of $FP$ and $x$ is an element of the free commutative monoid $K(m)$.
+    \item A morphism from $(m,x)$ to $(n,y)$ is a pair $(f,g)$ where $f \maps m \to n$ is a morphism in $FP$ and $g$ is an element in the apex of $F(f)$ which is mapped to $x$ and $y$ by the left and right legs of $F(f)$ respectively.
+\end{itemize}
+For a morphism of colored Petri nets 
+   \[
+    \begin{tikzcd}
+        FP 
+        \ar[dd, "{F(f, g)}", swap] 
+        \ar[dr, "K"{name=U}, pos=0.2]
+        &\\&  
+        \Span(\FCMon)
+        \\
+        FP'
+        \ar[ur, "K'"{name=D}, swap, pos=0.15]
+        & 
+        \arrow[Rightarrow, from = U, to = D, shorten <=3ex, shorten >=3ex, "\alpha", swap]
+    \end{tikzcd}
+    \]
+\end{defn}
+\noindent The category $\int K$ is an operational semantics for the colored Petri net $K$ in the sense that morphisms of $\int K$ represent sequences of processes which can occur in $K$. 
+\begin{prop}\label{soundness}
+     There is bijection between step sequences in $K$ and morphisms in $\int K$. 
+\end{prop}
+\begin{proof}
+
+Each step $(\tau ,f)$ with source $(m,x)$ and target $(n,y)$ gives a morphism 
+$(\tau, f) \maps (m,x) \to (n,y)$. A step sequence $\{(\tau_i,f_i)\}_{i=1}^{k}$ gives a morphism by composing all the morphisms $(\tau_i,f_i)$ with each other in the natural way.
+
+Conversely, let $(f,g) \maps (m,x) \to (n,y)$ be a morphism in $\int K$. $FP$ is freely generated by the transitions of $P$ under $+$ and composition. Therefore $f$ will be equal to an expression built from the basic transitions using $+$ and $\circ$.
+The operation $+$ satisfies the interchange law
+\[ c \circ a  + d \circ b =(c+ d) \circ (a +b) \]
+whenever all composites are defined. This law can be used inductively to turn $f$ into a composite of sums
+\[f_1 \circ f_2 \circ \ldots \circ f_n \]
+where each $f_i \maps x_i \to x_{i+1}$ is a sum of transitions in $P$.
+% In particular, this tells us that for $a \maps x \to y$ and $b \maps x' \to y'$,
+% \[a + b = a \circ 1_{x}+ 1_{y'} \circ b = (a + 1_{y'}) \circ (1_x  + b) \]
+% This means that whenever two processes are performed in parallel an arbitrary ordering can be imposed on them. This fact can be used to inductively simplify $f$ into a composite of the form
+% \[(\tau_1 + 1_{x_1}) \circ (\tau_2 + 1_{x_2}) \circ \ldots \circ (\tau_n + 1_{x_n}) \]
+Because $K$ preserves composition strongly, there is an isomorphism
+\[K(f) =K (f_1 \circ f_2 \ldots \circ f_n ) \cong K (f_1) \times_{K(x_2)} K(f_2) \times_{K(x_3)} \ldots \times_{K(x_{n}) } K(f_n).  \]
+This isomorphism gives a way to decompose the element $g \in K(f)$ into a tuple of composable elements $g_1,g_2,\ldots, g_n$ where each $g_i$ is an element of $K(f_i)$. The pairs $(\tau_i,g_i)$ give a step sequence of $K$ which corresponds to the morphism $(f,g)$.
+\end{proof}
+Note that functoriality of $\int$ justifies the definition of morphism for colored Petri nets. Definition \ref{semantics} shows how morphisms of colored Petri nets lift to functors between their categories of step sequences. For a morphism of colored Petri nets $(j,\alpha) \maps K \to K'$, functoriality of $\int (j, \alpha) \maps \int K \to \int K'$ says that the mapping between step sequences induced by $\int (j,\alpha)$ respects concatenation.
+
+\section{The Operational Semantics is Free on the Unfolding}Unfolding is a useful technique which reduces the analysis of colored Petri nets to that of ordinary Petri nets. This correspondence was first noticed by Jensen in the first volume of his book \emph{Coloured Petri nets: basic concepts, analysis methods and practical use} \cite{jensen2013coloured}. Since then, efficient algorithms have been developed for unfolding colored Petri nets \cite{systemsbio}, \cite{liu2012efficient}, \cite{kordon2006optimized}. It turns out that the operational semantics defined in the previous section is always the $\CMC$ on a some Petri net. The well-known unfolding construction gives this Petri net which generates $
+int K$.
+\begin{defn}\label{unfold}
+For a colored Petri net $K$ with underlying Petri net $\begin{tikzcd}T \ar[r,shift left=.5ex] \ar[r,shift right=.5ex] & \N[S] \end{tikzcd}$. For a free commutative monoid $M$, let $\#M$ denote it's generating set. The \define{unfolding} of $K$ is the Petri net
+\[
+\begin{tikzcd} 
+\UNFOLD(K) = \hat{T} \ar[r,shift left=.5ex,"\hat{s}"] \ar[r, shift right=.5ex,"\hat{t}",swap] & \N[\hat{S}]
+\end{tikzcd}\]
+where 
+\begin{itemize}
+    \item $\hat{T} = \{ (\tau, f) \, | \, \tau \in T \text{ and }f \in \# K(\tau)\}$,
+    \item $\hat{S} = \{ (p, x) \,|\, p \in S \text{ and } x \in \# K(p)  \}$,
+    \item $\hat{s} \maps \hat{T} \to \N[\hat{S}]$ sends a pair $(\tau,f)$ to the pair $(s(\tau), K(\tau)_{s(\tau)} (f)$ and,
+    \item $\hat{t} \maps \hat{T} \to \N[\hat{S}]$ sends a pair $(\tau, f)$ to the pair $(t(\tau),K(\tau)_{t(\tau)} (f) )$.
+\end{itemize}
+\end{defn}
+One advantage of reframing colored Petri nets in terms of category theory is that the definition of unfolding can be justified by categorical means.
+The categorical semantics for Petri nets and colored Petri nets can be drawn together to get
+\[
+\begin{tikzcd} 
+& \Petri \ar[dr,"F"] & \\
+\cPetri \ar[rr,"\int",swap]  & &\CMC.
+\end{tikzcd}
+\]
+
+To unfold a colored Petri net, we wish to find a functor $\mathtt{UNFOLD} \maps \cPetri \to \Petri$ such that for a colored Petri net $K$, the semantics of it's unfolding $F ( \mathtt{UNFOLD} (K) )$ matches it's original semantics $\int K$. This property says roughly that the behavior of an unfolded colored Petri must match the behavior of colored Petri net you started with. In other words $\UNFOLD$ must make the following diagram commute:
+\[
+\begin{tikzcd} 
+& \Petri \ar[dr,"F"] & \\
+\cPetri \ar[ur,"\UNFOLD"] \ar[rr,"\int",swap]  & &\CMC
+\end{tikzcd}
+\]
+The unfolding defined above does indeed satisfy this property.
+
+\begin{thm}\label{unfold}
+    The unfolding construction extends to a functor
+    \[ \UNFOLD \maps \cPetri \to \Petri\]
+    satisfying the commutative diagram
+\[
+\begin{tikzcd} 
+& \Petri \ar[dr,"F"] & \\
+\cPetri \ar[ur,"\UNFOLD"] \ar[rr,"\int",swap]  & &\CMC.
+\end{tikzcd}
+\]
+\end{thm}
+\begin{proof}
+$\UNFOLD$ is extended to morphisms as follows:
+For a morphism of colored Petri nets $(f,g,\alpha) \maps K \to K'$, $\UNFOLD(f,g,\alpha) \maps \UNFOLD(K) \to \UNFOLD(K')$ consists of the maps
+\begin{align*}
+\hat{f}   \maps  \hat{T} \to \hat{T'} &\quad \quad\quad \text{and} &\hat{g}   \maps  \hat{S} \to \hat{S'}\\
+      (\tau,k) \mapsto (f(\tau), \alpha_{\tau} (k) ) &  &(p,x) \mapsto (g(p), \alpha_{p} (x) )
+\end{align*}
+\noindent $(\hat{f},\hat{g})$ is indeed a morphism of Petri nets. Commuting with the source and target in the first component follows from $(f,g)$ being a morphism of Petri nets. Commuting with the source and target in the second component follows from $\alpha_\tau$ taking part in the commutative diagram
+\[
+\begin{tikzcd}
+    K(s(\tau))
+    \arrow[d, "\alpha_{s(\tau)}", swap]
+    &
+    K(\tau)
+    \arrow[d, "\alpha_{\tau}"]
+    \arrow[r]
+    \arrow[l]
+    &
+    K(t(\tau))
+    \arrow[d, "\alpha_{t(\tau)}"]
+    \\
+    K'(s'(f(\tau))
+    &
+    K'(f(\tau))
+    \arrow[r]
+    \arrow[l]
+    &
+    K'(t'(f(\tau)).
+\end{tikzcd}
+\]
+Functoriality of $\UNFOLD$ follows very quickly from the definitions.
+
+Next we show that $\UNFOLD$ respects the categorical semantics functors for $\cPetri$ and $\Petri$. For a colored Petri net $K$, we have that an isomorphism of categories
+\[F \circ \UNFOLD(K) \cong \int K\]
+First note that we have a bijection
+\[\hat{S} \cong \coprod_{p \in S} \# K(p) \]
+between $\hat{S}$ and the disjoint union of all possible colors. Therefore, the objects of $F \circ \UNFOLD (K)$ are given by
+\[\N[\hat{S}] \cong \N[\coprod_{p \in S} \# K(p)] \cong \otimes_{p \in S} \N[ \# K(p) ]  \]
+where the last isomorphism follows from $\N \maps \Set \to \CMon$ preserving coproducts. On the other hand,
+\[\Ob \int K = \{(m,x) \, | \, m \in \N[S] \text{ and } x \in K(m) \}. \]
+Because $K$ preserves the monoidal product, $K(m)$ will be isomorphic to the direct sum of commutative monoids $K(p)$ for $p \in S$. Therefore, $m$ will be a tuple of markings $(m_1, m_2, \ldots, m_k)$ where each $m_i$ is an element of the free commutative monoid on the color set for some species. An isomorphism, \[\Ob \int K \to \N[\hat{S}]\]
+of commutative monoids is constructed by sending the pair $(x,(m_1,m_2,\ldots,m_k)$ to the sum $\sum_{i} m_i$ which is evidently an element of $\N[\hat{S}]$. This map is injective because $\N[\hat{S}]$ is free
+\end{proof}
+
+\begin{examples}
+We can unfold the colored Petri net in Example \ref{colornet} to get the following:
+\[\begin{tikzpicture}
+        \node [style=place] (25in) at (0,1) {25};
+        \node [style=place] (50in) at (0,-1) {50};
+        \node [style=place] (25out) at (0, 3) {25};
+        \node [style=place] (50out) at (0,-3) {50};
+        \node [style=place] (apple) at (-3,0) {apple};
+        \node [style=place] (bar) at (3,0) {bar};
+        \node [style=transition] (exit1) at (0, 2) {}
+        edge [pre] (25in)
+        edge [post] (25out);
+        \node [style=transition] (exit2) at (0, -2) {}
+        edge [pre] (50in)
+        edge [post] (50out);
+        \node [style=transition] (apple1) at (-1.5, 1) {}
+        edge [pre] node {3} (25in)
+        edge [post] (apple);
+        \node [style=transition] (apple2) at (-1.5, -1) {}
+        edge [pre]  (25in)
+        edge [pre]  (50in)
+        edge [post] (apple);
+        \node [style=transition] (apple3) at (-1.5, 0) {}
+        edge [pre] node {2} (50in)
+        edge [post] (apple)
+        edge [post] (25out);
+        \node [style=transition] (bar1) at (1.5, .5) {}
+        edge [pre] (25in)
+        edge [post] (bar);
+        \node [style=transition] (bar2) at (1.5, -.5) {}
+        edge [pre] (50in)
+        edge [post] (bar)
+        edge [post] (25out);
+\end{tikzpicture}\]
+The categorical semantics of this Petri net...
+\end{examples}
+
+
+% As $F$ is fully faithful, there is an inverse
+% \[F^{-1} \maps \mathrm{Im}\, F \to \Petri \]
+% where $\mathrm{Im}\, F$ is the full and replete subcategory of $\CMC$ containing only the commutative monoidal categories freely generated by a Petri net. If the functor $\int$ lands in $\mathrm{Im}\,F$, then we can construct $\UNFOLD$ as the composite $F^{-1} \circ \int$. $\int$ can indeed be corestricted in this way.
+
+% It suffices to show the following:
+% \begin{itemize}
+%     \item For every colored Petri net $K$ there is an ordinary Petri net $P$ such that $FP \cong \int K$.
+%     \item For every morphism of colored Petri nets $((f,g) ,\alpha)) \maps K \to K'$ there is an ordinary morphism of Petri nets $(h,j) \maps P \to P'$ with $F(h,j) \maps F P \to F P'$ equal to $\int ((f,g), \alpha)) \maps \int K \to \int K'$ composed with an isomorphism on either end.
+% \end{itemize}
+% For the first bullet point, we will construct the Petri net \joe{ERROR}
+% % $P = \hat{T} \ar[r,shift left=.5ex] \ar[r,shift right=.5ex] & \N[\hat{S}]$
+%     \[
+%         \hat{S} = \{ (a,x) | a \in S \text{ and } x \in K(a) \}
+%     \]
+%     let 
+%     \[
+%         \hat{T} = \{ (\tau, x, y) | \tau \in T, K(\tau)(x) = y \}
+%     \]
+%     and define $Q$ to be the Petri net
+%     \[\begin{tikzcd}
+%         \hat T 
+%         \arrow[r, shift left, "\hat s"]
+%         \arrow[r, shift right, "\hat t", swap]
+%         & 
+%         \N[\hat S].
+%     \end{tikzcd}\]
+%     $\hat{s}$ is the map which sends a transition $(\tau,x,y)$ to $(s(\tau),x)$ and $\hat{t}$ sends $(\tau,x,y)$ to $(t(\tau),y)$.
+    
+%     We construct an equivalence
+%     \[
+%         \alpha \maps \int K \to FQ
+%     \]
+%     explicitly. The objects of $FQ$ are the same; so they are sent to their counterpart in $\int K$.
+% \end{proof}
+
+% We call $Q$ the \define{unfolding} of $P$.
+% \begin{examples}
+% \[
+% \begin{tikzpicture}
+% 	\begin{pgfonlayer}{nodelayer}
+%         \node [style=species] (C) at (-1, 0) {$C$};
+%         \node [style=species] (B) at (-4, -0.5) {$B$};
+%         \node [style=species] (A) at (-4, 0.5) {$A$};
+%         \node [style=transition] (tau1) at (-2.5, 0.6) {$\;\phantom{\Big{|}}\tau_1\;$};
+%         \node [style=transition] (tau2) at (-2.5, -0.7) {$\;\phantom{\Big{|}}\tau_2\;$};
+% 	\end{pgfonlayer}
+% 	\begin{pgfonlayer}{edgelayer}
+%         \draw [style=inarrow] (A) to (tau1);
+%         \draw [style=inarrow] (B) to (tau1);
+%         % \draw [style=inarrow, bend right=15, looseness=1.00] (tau1) to (C);
+%         \draw [style=inarrow, bend left=15, looseness=1.00] (tau1) to (C);
+%         \draw [style=inarrow, bend left=15, looseness=1.00] (C) to (tau2);
+%         \draw [style=inarrow, bend left=15, looseness=1.00] (tau2) to (B); 
+%         \draw [style=inarrow, bend right =15, looseness=1.00] (tau2) to (B); 
+% 	\end{pgfonlayer}
+% \end{tikzpicture}\]
+
+% Let $P$ denote the Petri net above. Define a coloring $K \maps FP \to \PSet$ of $P$ such that 
+% \begin{align*}
+%     K(A) &= \{r,g,b\}\\
+%     K(B) &= \{y\}\\
+%     K(C) &= \{p,d\},
+% \end{align*}
+% $K(\tau_1) \maps K(A) \times K(B) \to K(C)$ is given by 
+% \begin{align*}
+%     (r,y) &\mapsto p\\
+%     (g,y) &\mapsto d\\
+%     (b,y) &\mapsto \bot,
+% \end{align*}
+% and $K(\tau_2) \maps K(C) \to K(B) \times K(B)$ is given by 
+% \begin{align*}
+%     p &\mapsto (y,y)\\
+%     d &\mapsto (y,y)
+% \end{align*}
+% \dots 
+% \end{examples}
+%  This construction extends to a functor.
+% \begin{thm}
+%     There is a functor $\mathtt{UNFOLD} \maps \cPetri \to \Petri$ which sends a colored petri net with guards $K \maps FP \to \PSet$ to to its unfolding $Q$. For a morphism of \dots
+% \end{thm}
+
+% \joe{Here we can put pseudocode for unfolding.
+% for every colored place, create a place for each color, for every transition, create a copy for each tuple of input colors that doesn't get sent to the trashcan, connect them exactly as they correspond in the colored net, it will have exactly $\sum_P K_i$ places, and at worst $(\prod_P K_i) \times T$ transitions}
+
+
+% \begin{algorithm}
+%     unfold a colored Petri net \[K \maps FP \to \PSet \dots\] into an uncolored Petri net
+% \hline
+% \FOR{t \in T}
+    
+% \ENDFOR
+% \end{algorithm}
+
+% Categorically, colored Petri nets are the same as Petri nets. More precisely, we have the following theorem:
+
+
+
+% \begin{thm}
+% \label{thm:unfold}
+%     The functor $\mathtt{UNFOLD} \maps \cPetri \to \Petri$ is left inverse to the trivial-coloring functor.
+% \end{thm}
+
+% \begin{proof}
+%     \joe{what we want to show is that if we start with an uncolored Petri net $P$, then give it the trivial coloring, then unfold it, what we end up with is isomorphic to $P$.}
+% \end{proof}
+
+% \joe{one might wonder if this gives an adjunction. It doesn't because we came up with a simple counter example\dots}
+
+% \begin{proof}[BAD PROOF]
+%     It suffices to construct a functor from $\Petri$ to $\cPetri$ that is a weak right and left inverse. A weak inverse is given by the following functor
+%     \begin{align*}
+%         % \quad \quad 
+%         U \maps \Petri &\to \cPetri
+%         \\
+%         P \, &\mapsto \, (\Delta 1 \maps FP \to \PSet)
+%         \\
+%         ((f,g) \maps P \to P') \, &\mapsto \, (f,g, \mathbf{!}) 
+%     \end{align*}
+%     Where $\Delta 1$ is the constant functor which sends every object to the terminal set, and every morphism $f \maps a \to b$ to the identity. The natural transformation $\mathbf{!}$ has every component given by the identity $\mathrm{id} \maps \{*\} \to \{*\}$.
+    
+%     Given a Petri net $P$, the unfolding of $U P$ contains no new information. Indeed, the places of $\mathtt{UNFOLD} U (P)$ are given by pairs $(a,*)$ where $a$ is a place of $P$ and $*$ is the unique element of the terminal set. The morphisms of $\mathtt{UNFOLD} \, U (P)$ are given by tuples $(\tau, *, *)$ where $\tau$ is a transition of $P$. The isomorphism
+%     \[ \UNFOLD\,  U (P) \xrightarrow{\sim} P\]
+%     sends $(a,*)$ to $a$ and $(\tau, * ,* )$ to $\tau$.
+    
+%     Given a colored Petri net 
+%     \[K \maps FP \to \PSet \]
+%     $U \, \UNFOLD[K] \maps F \hat{P} \to \PSet$
+%     is given by functor
+%     \begin{align*}
+%         (a,x) \, \mapsto & \,\{*\} \\
+%         (\tau,x,y) \, \mapsto & \, \mathrm{id} \maps \{*\} \to \{*\}
+%     \end{align*}
+%     We can define a morphism
+%     \[ (f,g, \alpha) \maps U \, \UNFOLD[K] \to K\] of colored Petri nets by 
+%     \begin{align*}
+%         f \maps \hat{T} &\to T  \\
+%         (\tau,x,y) &\mapsto \tau \\`
+%         g \maps \hat{S} &\to S  \\
+%         (a,x) &\mapsto  a \\
+%         \alpha_a \maps \{*\} &\to K(a) \\
+%         * &\mapsto  x
+%     \end{align*}
+%     where $\alpha_a$ is the $a$ component of the natural transformation $\alpha \maps U \, \UNFOLD[K] \Rightarrow K \circ F(f,g)$.
+% \end{proof}
+% Unfolding respects the semantics of a colored Petri net. This is expressed by the commutative diagram
+% \jade{put this diagram in the introduction}
+% \[
+% \begin{tikzcd} 
+% & \Petri \ar[dr,"F"] & \\
+% \cPetri \ar[rr,"\int",swap] \ar[ur,"\mathtt{UNFOLD}"] & &\CMC
+% \end{tikzcd}
+% \]
+% Roughly, this theorem says that any property of Petri nets which can suitably be expressed in categorical way is also true of colored Petri nets. In particular, this allows us to give a categorical description of the process semantics of colored Petri nets which takes advantage of the semantics for ordinary Petri nets.
+
+% Recall that Definition \ref{unfold} defines unfolding by first taking the Grothendieck construction and then identifying a net which freely generates it. The categorical semantics of a colored Petri net should be given by the categorical semantics of it's unfolded net. However, this is the same as the free commutative monoidal category generated by the unfolded net so we can make the following definition.
+
+% \begin{defn}
+% For a colored Petri net $K \maps FP \to \PSet$, a categorical semantics functor is given by the monoidal Grothendieck construction 
+% \[\int \maps \cPetri \to \CMC \]
+% \end{defn}
+
+% Functoriality of this construction is useful. It means that for a given morphism of colored Petri nets, we get a simulation of it's semantics. In practice, this means that modifications can be made to a colored Petri net in a way that is coherent with the processes it generates.
+
+% \begin{cor}
+%     The category $\cPetri$ is complete and cocomplete. \joe{we must re-examine this.}
+% \end{cor}
+
+% \begin{proof}
+%     This follows from \cref{thm:equivalence} and \cref{prop:complete}.
+% \end{proof}

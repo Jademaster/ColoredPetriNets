@@ -1,0 +1,260 @@
+\usepackage{amssymb,mathrsfs,amsmath,amsfonts,amsthm,graphicx,pdfpages,MnSymbol,relsize,quiver}
+\usepackage{xcolor}
+\usepackage{tikz, tikz-cd}
+\usepackage[section]{algorithm}
+\usepackage{algorithmic}
+\usepackage{wasysym}
+
+%colors
+\newcommand{\red}{{\color{red} \bullet}}
+\newcommand{\green}{{\color{green} \bullet}}
+\newcommand{\blue}{{\color{blue} \bullet}}
+\newcommand{\define}[1]{{\bf \boldmath{#1}}}
+
+\newcommand{\namedset}[1]{\mathbb{#1}}
+\newcommand{\N}{\namedset N}
+
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
+
+\newcommand{\namedcat}[1]{\mathsf{#1}}
+\newcommand{\C}{\mathcal C}
+\newcommand{\Cat}{\namedcat{Cat}}
+\newcommand{\CMC}{\namedcat{CMC}}
+\newcommand{\CMon}{\namedcat{CMon}}
+\newcommand{\Mon}{\namedcat{Mon}}
+\newcommand{\Set}{\namedcat{Set}}
+\newcommand{\Petri}{\namedcat{Petri}}
+\newcommand{\cPetri}{\namedcat{cPetri}}
+\newcommand{\PSet}{\Set_{\perp}}
+\newcommand{\SetPart}{\Set_{\mathrm{part}}}
+\newcommand{\UNFOLD}{\mathtt{UNFOLD}}
+\newcommand{\FCMon}{\mathsf{\Kl(\N)
+}}
+\newcommand{\Ob}{\:\mathrm{Ob}}
+\newcommand{\Mor}{\:\mathrm{Mor}}
+\newcommand{\Net}[1]{#1-\mathsf{Net}}
+\newcommand{\Span}{\mathsf{Span}}
+\newcommand{\SSpan}{\mathbb S \mathsf{pan}}
+\newcommand{\CAT}{\mathsf{CAT}}
+\newcommand{\im}{\mathrm{Im}\,}
+
+\newcommand{\alphahat}{\widehat \alpha}
+\newcommand{\Disp}{\mathsf{Disp}}
+
+
+% \newcommand{\net}[1,2]{\begin{tikzcd}#1 \ar[r,shift left=.5ex] \ar[r,shift right=.5ex] & \N[#2] \end{tikzcd}}
+
+
+\makeatletter
+\newcommand*{\relrelbarsep}{.386ex}
+\newcommand*{\relrelbar}{%
+  \mathrel{%
+    \mathpalette\@relrelbar\relrelbarsep
+  }%
+}
+\newcommand*{\@relrelbar}[2]{%
+  \raise#2\hbox to 0pt{$\m@th#1\relbar$\hss}%
+  \lower#2\hbox{$\m@th#1\relbar$}%
+}
+\providecommand*{\rightrightarrowsfill@}{%
+  \arrowfill@\relrelbar\relrelbar\rightrightarrows
+}
+\providecommand*{\leftleftarrowsfill@}{%
+  \arrowfill@\leftleftarrows\relrelbar\relrelbar
+}
+\providecommand*{\xrightrightarrows}[2][]{%
+  \ext@arrow 0359\rightrightarrowsfill@{#1}{#2}%
+}
+\providecommand*{\xleftleftarrows}[2][]{%
+  \ext@arrow 3095\leftleftarrowsfill@{#1}{#2}%
+}
+\makeatother
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{subfiles}
+\usepackage{stackengine}
+\usepackage{mathtools}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage[a4paper,top=3cm,bottom=3cm,inner=3cm,outer=3cm]{geometry}
+
+\usepackage{comment}
+
+\usepackage{graphicx}
+\usepackage{adjustbox}
+\usepackage[all,2cell]{xy}\UseAllTwocells\SilentMatrices
+\definecolor{darkgreen}{rgb}{0,0.45,0}
+\usepackage[colorlinks,citecolor=darkgreen,urlcolor=gray,final,hyperindex,linktoc=page,pagebackref]{hyperref}
+\renewcommand*{\backref}[1]{(Referred to on page #1.)}
+\usepackage[capitalize]{cleveref}
+\crefname{equation}{}{}
+\crefname{item}{}{}
+\usepackage{enumerate}
+
+
+
+\newtheorem*{thm*}{Theorem}
+\theoremstyle{remark}
+\newtheorem*{rmk*}{Remark}
+\newtheorem*{lem*}{Lemma}
+\theoremstyle{plain}
+\newtheorem*{defn*}{Definition}
+\newtheorem*{cor*}{Corollary}
+\theoremstyle{definition}
+\newtheorem*{examples*}{Examples}
+\newtheorem{prop*}{Proposition}
+
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\theoremstyle{plain}
+\newtheorem{prop}[thm]{Proposition}
+\theoremstyle{remark}
+\newtheorem{rmk}[thm]{Remark}
+\theoremstyle{plain}
+\newtheorem{lem}[thm]{Lemma}
+\theoremstyle{plain}
+\newtheorem{cor}[thm]{Corollary}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\theoremstyle{definition}
+\newtheorem{examples}[thm]{Example}
+
+
+
+
+
+
+
+
+
+
+\newcommand{\maps}{\colon}
+
+
+
+
+
+
+%commenting
+
+\newcommand{\joe}[1]{\textcolor{blue}{#1}}
+
+\newcommand{\jade}[1]{\textcolor{purple}{#1}}
+% \definecolor{purple(x11)}{rgb}{0.8, 0, 0.8}
+% \def\purple{\color{purple(x11)}}
+% \def\jade{\purple}
+
+
+
+
+% TikZ stuff %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usetikzlibrary{arrows,positioning,fit,matrix,shapes.geometric,external}
+
+
+\newcommand*\pgfdeclareanchoralias[3]{%
+  \expandafter\def\csname pgf@anchor@#1@#3\expandafter\endcsname
+     \expandafter{\csname pgf@anchor@#1@#2\endcsname}}
+
+\tikzset{
+    circnode/.style={
+      circle, draw=red, very thin, outer sep=0.025em, minimum size=2em,
+      fill=red, text centered},
+    integral/.style={
+      circle, draw=black, very thick, outer sep=0.025em,
+      minimum size=2em, fill=blue!5, text centered},
+    multiply/.style={
+      circle, draw=black, very thick, outer sep=0.025em,
+      minimum size=2em, fill=blue!5, text centered},
+    zero/.style={
+      circle, draw=black, very thick, minimum size=0.15cm, fill=black,
+      inner sep=0, outer sep=0},
+    bang/.style={
+      circle, draw=black, very thick, minimum size=0.15cm, fill=green!10,
+      inner sep=0, outer sep=0},
+    delta/.style={
+      regular polygon, regular polygon sides=3, minimum size=0.4cm, inner
+      sep=0, outer sep=0.025em, draw=black, very thick, fill=green!10},
+    codelta/.style={
+      regular polygon, regular polygon sides=3, shape border rotate=180, minimum size=0.4cm,
+      inner sep=0, outer sep=0.025em, draw=black, very thick, fill=green!10},
+    plus/.style={
+      regular polygon, regular polygon sides=3, shape border rotate=180, minimum size=0.4cm,
+      inner sep = 0, outer sep=0.025em, draw=black, very thick, fill=black},
+    coplus/.style={
+      regular polygon, regular polygon sides=3, minimum size=0.4cm,
+      inner sep = 0, outer sep=0.025em, draw=black, very thick, fill=black},
+    sqnode/.style={
+      regular polygon, regular polygon sides=4, minimum size=2.6em,
+      draw=black, very thick, inner sep=0.2em, outer sep=0.025em,
+      fill=yellow!10, text centered},
+    bigcirc/.style={
+      circle, draw=black, very thick, text width=1.6em, outer sep=0.025em,
+      minimum height=1.6em, fill=blue!5, text centered}
+}
+
+\tikzstyle{tri}=[regular polygon,regular polygon sides=3,shape border rotate=1
+80,fill=none,draw=black]
+
+\pgfdeclareanchoralias{regular polygon}{corner 2}{left copy}
+\pgfdeclareanchoralias{regular polygon}{corner 3}{right copy}
+\pgfdeclareanchoralias{regular polygon}{corner 3}{addend}
+\pgfdeclareanchoralias{regular polygon}{corner 2}{summand}
+
+
+%TikZ
+
+
+%John's Petri nets
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{backgrounds,circuits,circuits.ee.IEC,shapes,fit,matrix}
+%\tikzstyle{species}=[circle, fill=none, draw=black,scale=2]
+%\tikzstyle{transition}=[rectangle, fill=none, draw=black, scale=1.5]
+
+\def\rd{\rotatebox[origin=c]{90}{$\dashv$}} %rotate dash right
+\def\ld{\rotatebox[origin=c]{-90}{$\dashv$}} %rotate dash left
+
+\tikzstyle{simple}=[-,line width=2.000]
+\tikzstyle{arrow}=[-,postaction={decorate},decoration={markings,mark=at position .5 with {\arrow{>}}},line width=1.100]
+\pgfdeclarelayer{edgelayer}
+\pgfdeclarelayer{nodelayer}
+\pgfsetlayers{edgelayer,nodelayer,main}
+
+\tikzstyle{none}=[inner sep=0pt]
+
+% Petri nets
+\definecolor{lblue}{rgb}{0,250,255}
+\tikzstyle{species}=[circle,fill=yellow,draw=black,scale=1.15]
+\tikzstyle{transition}=[rectangle,fill=lblue,draw=black,scale=1.15]
+\tikzstyle{inarrow}=[->, >=stealth, shorten >=.03cm,line width=1.5]
+\tikzstyle{empty}=[circle,fill=none, draw=none]
+\tikzstyle{inputdot}=[circle,fill=black,draw=black, scale=.25]
+\tikzstyle{inputarrow}=[->,draw=purple, shorten >=.05cm]
+\tikzstyle{simple}=[-,draw=black,line width=1.000]
+
+
+%Petri net package
+\def\xcolorversion{2.00}
+\def\xkeyvalversion{1.8}
+\usetikzlibrary{arrows,shapes,decorations,automata,backgrounds,petri}
+\tikzstyle{place}=[circle,thick,draw=blue!75,fill=blue!20,minimum size=6mm]
+\tikzstyle{red place}=[place,draw=red!75,fill=red!20]
+\tikzstyle{transition}=[rectangle,thick,draw=black!75,
+  			  fill=black!20,minimum size=4mm]
+
+
+\newcommand{\inv}{^{-1}}
+
+\newcommand{\Int}{\textstyle{\int}}
+
+\newcommand{\Kl}{\mathsf{Kl}}
+\newcommand{\Khat}{\widehat K}
