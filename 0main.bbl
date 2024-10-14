@@ -42,11 +42,6 @@ Robert Dawson, Robert Par{\'e}, and Dorette Pronk.
 \newblock The span construction.
 \newblock {\em Theory and Applications of Categories}, 24(13):302--377, 2010.
 
-\bibitem[DS97]{Monoidalbicatshopfalgebroids}
-Brian Day and Ross Street.
-\newblock Monoidal bicategories and {H}opf algebroids.
-\newblock {\em Adv. Math.}, 129(1):99--157, 1997.
-
 \bibitem[evi]{evil}
 Principle of equivalence.
 \newblock {\em web resource}.
@@ -120,6 +115,11 @@ Jade Master.
 \newblock Petri nets based on lawvere theories.
 \newblock {\em Mathematical Structures in Computer Science}, 30(7):833--864,
   2020.
+
+\bibitem[ML63]{mac1963natural}
+Saunders Mac~Lane.
+\newblock Natural associativity and commutativity.
+\newblock {\em Rice University Studies}, 49(4):28--46, 1963.
 
 \bibitem[MM90]{monoids}
 Jos{\'e} Meseguer and Ugo Montanari.

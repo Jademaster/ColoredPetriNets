@@ -1,56 +1,52 @@
-This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
+This is BibTeX, Version 0.99d (TeX Live 2023)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: 0main.aux
 The style file: alpha.bst
 Database file #1: references.bib
 Warning--string name "nlab" is undefined
---line 90 of file references.bib
-Warning--I didn't find a database entry for "GP1"
-Warning--I didn't find a database entry for "GP2"
-Warning--I didn't find a database entry for "Shulman2"
-Warning--I didn't find a database entry for "ML"
+--line 100 of file references.bib
 Warning--to sort, need author or key in evil
 Warning--empty author in evil
 Warning--empty year in evil
 You've used 25 entries,
             2543 wiz_defined-function locations,
-            733 strings with 8596 characters,
-and the built_in function-call counts, 10309 in all, are:
-= -- 1083
-> -- 398
-< -- 20
-+ -- 132
-- -- 127
-* -- 701
-:= -- 1629
+            725 strings with 8524 characters,
+and the built_in function-call counts, 10240 in all, are:
+= -- 1076
+> -- 387
+< -- 21
++ -- 128
+- -- 123
+* -- 694
+:= -- 1616
 add.period$ -- 87
 call.type$ -- 25
-change.case$ -- 142
+change.case$ -- 141
 chr.to.int$ -- 25
 cite$ -- 29
-duplicate$ -- 438
-empty$ -- 788
-format.name$ -- 161
-if$ -- 2172
+duplicate$ -- 439
+empty$ -- 787
+format.name$ -- 157
+if$ -- 2159
 int.to.chr$ -- 1
 int.to.str$ -- 0
 missing$ -- 23
 newline$ -- 132
 num.names$ -- 75
-pop$ -- 137
+pop$ -- 136
 preamble$ -- 1
-purify$ -- 170
+purify$ -- 169
 quote$ -- 0
-skip$ -- 366
+skip$ -- 365
 stack$ -- 0
-substring$ -- 650
+substring$ -- 647
 swap$ -- 98
-text.length$ -- 20
+text.length$ -- 21
 text.prefix$ -- 10
 top$ -- 0
 type$ -- 192
 warning$ -- 3
-while$ -- 104
+while$ -- 103
 width$ -- 30
 write$ -- 340
-(There were 8 warnings)
+(There were 4 warnings)
